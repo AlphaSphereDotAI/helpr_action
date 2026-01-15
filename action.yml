@@ -1,1 +1,25 @@
-
+name: Helpr Action
+description: Helpr Action is a GitHub Action that helps AlphaSphere.AI team.
+inputs:
+  build_image:
+    required: true
+    description: Build Image
+  is_test:
+    required: true
+    description: Test Mode
+  registry:
+    required: true
+    description: Registry
+  install_source:
+    required: true
+    description: Source to install from (e.g., PyPI Package or Git source)
+runs:
+  using: composite
+  steps:
+    - name: Build Image
+      uses: ./.github/actions/container_image
+      if: ${{ inputs.build_image == 'true' }}
+      with:
+        is_test: ${{ inputs.is_test }}
+        registry: ${{ inputs.registry }}
+        install_source: ${{ inputs.install_source }}
