@@ -4,5 +4,5 @@
   "extends": [
     "config:best-practices"
   ],
-  "osvVulnerabilityAlerts": true,
+  "osvVulnerabilityAlerts": true
 }
