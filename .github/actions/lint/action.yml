@@ -3,11 +3,6 @@ description: Run comprehensive linting and code quality checks
 runs:
   using: composite
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-      with:
-        token: ${{ secrets.GH_TOKEN }}
-
     # Taplo format
     - name: Install taplo
       uses: baptiste0928/cargo-install@b687c656bda5733207e629b50a22bf68974a0305 # v3.3.2

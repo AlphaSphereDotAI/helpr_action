@@ -15,11 +15,6 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-      with:
-        token: ${{ secrets.GH_TOKEN }}
-
     - name: Get Package version from pyproject.toml
       id: get_package_version
       uses: mikefarah/yq@065b200af9851db0d5132f50bc10b1406ea5c0a8 # v4.50.1
