@@ -1,0 +1,51 @@
+name: CI Tools
+description: CI utilities like opencode and uv lock sync
+inputs:
+  opencode_enabled:
+    description: Enable opencode tool
+    required: false
+    default: 'false'
+  uv_lock_sync_enabled:
+    description: Enable uv lock sync
+    required: false
+    default: 'false'
+  opencode_model:
+    description: Opencode model to use
+    required: false
+    default: 'opencode/grok-code'
+runs:
+  using: composite
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      with:
+        token: ${{ secrets.GH_TOKEN }}
+
+    # Opencode
+    - name: Run opencode
+      if: ${{ inputs.opencode_enabled == 'true' }}
+      uses: sst/opencode/github@99a1e73fa1bd5c92c02abd8a20b0e274d5b0d214 # v1.1.21
+      env:
+        OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+      with:
+        model: ${{ inputs.opencode_model }}
+
+    # UV Lock Sync
+    - name: Install uv
+      if: ${{ inputs.uv_lock_sync_enabled == 'true' }}
+      uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+      with:
+        enable-cache: true
+        activate-environment: true
+
+    - name: Sync dependencies and uv.lock
+      if: ${{ inputs.uv_lock_sync_enabled == 'true' }}
+      run: uv lock
+      shell: bash
+
+    - name: Commit and push changes
+      if: ${{ inputs.uv_lock_sync_enabled == 'true' }}
+      uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
+      with:
+        commit_message: Sync uv.lock
+        commit_options: --no-verify
