@@ -10,6 +10,13 @@ inputs:
   install_source:
     required: true
     description: Source to install from (e.g., PyPI Package or Git source)
+outputs:
+  image_tag:
+    description: The built image tag
+    value: ${{ steps.tag.outputs.TAG }}
+  image_digest:
+    description: The built image digest
+    value: ${{ steps.push.outputs.digest }}
 runs:
   using: composite
   steps:
@@ -105,7 +112,7 @@ runs:
         command: cves
         dockerhub-user: mh0386
         dockerhub-password: ${{ secrets.TOKEN_KEY_DOCKER }}
-        image: ${{ needs.build_image.outputs.image_tag }}
+        image: ${{ steps.tag.outputs.TAG }}
         github-token: ${{ secrets.GH_TOKEN }}
     # trufflehog
     - name: Install trufflehog
@@ -116,13 +123,13 @@ runs:
     - name: Docker Secret Scanning
       shell: bash
       run: >-
-        trufflehog docker --image ${{needs.build_image.outputs.image_tag}}
+        trufflehog docker --image ${{steps.tag.outputs.TAG}}
         --fail --github-actions --results=verified --log-level=4 --no-update
     # syft
     - name: SBOM Generation
       uses: anchore/sbom-action@0b82b0b1a22399a1c542d4d656f70cd903571b5c # v0.21.1
       with:
-        image: ${{ needs.build_image.outputs.image_tag }}
+        image: ${{ steps.tag.outputs.TAG }}
         dependency-snapshot: true
         output-file: ${{ github.event.repository.name }}-sbom.json
         format: syft-json
@@ -131,7 +138,7 @@ runs:
       uses: anchore/scan-action@62b74fb7bb810d2c45b1865f47a77655621862a5 # v7.2.3
       id: scan
       with:
-        image: ${{ needs.build_image.outputs.image_tag }}
+        image: ${{ steps.tag.outputs.TAG }}
         cache-db: true
     - name: upload Anchore scan SARIF report
       if: success() || failure()
@@ -142,7 +149,7 @@ runs:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
       with:
-        image-ref: ${{ needs.build_image.outputs.image_tag }}
+        image-ref: ${{ steps.tag.outputs.TAG }}
         trivy-config: .github/lint/.trivy.yaml
         format: sarif
         output: trivy-results-image.sarif
@@ -157,7 +164,7 @@ runs:
     - name: Lint the Container Image
       uses: goodwithtech/dockle-action@e30e6af832aad6ea7dca2a248d31a85eab6dbd68 # v0.4.15
       with:
-        image: ${{ needs.build_image.outputs.image_tag }}
+        image: ${{ steps.tag.outputs.TAG }}
         format: sarif
         output: dockle.sarif
         accept-file: settings.py
