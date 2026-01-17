@@ -9,7 +9,11 @@
   env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  packages = [ pkgs.git ];
+  packages = with pkgs; [
+    taplo
+    ls-lint
+    trufflehog
+  ];
 
   # https://devenv.sh/languages/
   # languages.rust.enable = true;
