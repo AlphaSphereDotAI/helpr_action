@@ -2,44 +2,44 @@ name: Helpr Action
 description: Helpr Action is a GitHub Action that helps AlphaSphere.AI team.
 inputs:
   build_container:
-    required: true
+    required: false
     description: Build Container
     default: "false"
   build_python:
-    required: true
+    required: false
     description: Build Python Package
     default: "false"
   ci_tools:
-    required: true
+    required: false
     description: Install CI Tools
     default: "false"
   lint:
-    required: true
+    required: false
     description: Lint Code
     default: "false"
   release:
-    required: true
+    required: false
     description: Release Mode
     default: "false"
   test:
-    required: true
+    required: false
     description: Test Code
     default: "false"
   version:
-    required: true
+    required: false
     description: Bump Version
     default: "false"
   is_test:
     required: true
     description: Test Mode
   registry:
-    required: true
+    required: false
     description: Registry
   install_source:
-    required: true
+    required: false
     description: Source to install from (e.g., PyPI Package or Git source)
   github_token:
-    required: true
+    required: false
     description: GitHub Token
   opencode_enabled:
     description: Enable opencode tool
