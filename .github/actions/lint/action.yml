@@ -17,7 +17,8 @@ runs:
     - name: Git Secret Scanning
       if: ${{ inputs.linter == 'trufflehog' }}
       run: >-
-        devenv shell trufflehog git ${{github.event.repository.html_url}} --branch=${{github.head_ref || github.ref_name}}
+        devenv shell trufflehog git ${{github.event.repository.html_url}} 
+        --branch=${{github.head_ref || github.ref_name}}
         --fail --github-actions --results=verified,unknown --log-level=4 --no-update
       shell: bash
 
