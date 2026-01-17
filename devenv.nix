@@ -109,6 +109,24 @@
         ruff-format.enable = true;
         ruff-check.enable = true;
         actionlint.enable = true;
+        dockfmt.enable = true;
+        dprint = {
+          enable = true;
+          settings = {
+            newLineKind = "lf";
+          };
+        };
+        jsonfmt.enable = true;
+        nixf-diagnose.enable = true;
+        nixfmt.enable = true;
+        oxipng.enable = true;
+        prettier.enable = true;
+        shellcheck.enable = true;
+        shfmt.enable = true;
+        statix.enable = true;
+        taplo.enable = true;
+        xmllint.enable = true;
+        yamlfmt.enable = true;
       };
       settings = {
         formatter = {
