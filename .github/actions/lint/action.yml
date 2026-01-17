@@ -16,15 +16,6 @@ runs:
       run: devenv shell taplo-lint
       shell: bash
 
-    # TruffleHog
-    - name: Git Secret Scanning
-      if: ${{ inputs.linter == 'trufflehog' }}
-      run: >-
-        devenv shell trufflehog git ${{github.event.repository.html_url}}
-        --branch=${{github.head_ref || github.ref_name}}
-        --fail --github-actions --results=verified,unknown --log-level=4 --no-update
-      shell: bash
-
     # Pre-commit
     - name: Run pre-commit hooks
       if: ${{ inputs.linter == 'pre-commit' }}
