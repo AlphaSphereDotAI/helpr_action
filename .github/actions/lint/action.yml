@@ -9,6 +9,7 @@ runs:
   steps:
     # Taplo lint
     - name: Taplo lint
+      if: ${{ inputs.linter == 'taplo' }}
       run: devenv shell taplo-lint
       shell: bash
 
