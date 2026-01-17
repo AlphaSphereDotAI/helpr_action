@@ -35,8 +35,9 @@ runs:
 
     # UV Lock Check
     - name: Check if the lockfile is up-to-date
+      if: ${{ inputs.linter == 'uv-lock' }}
       id: uv_lock_check
-      run: uv lock --check
+      run: devenv shell uv_lock_check
       shell: bash
     - name: Job Summary
       uses: jazanne/job-summary-action@690eb386a0b86fe4da7c6f0e543e61330ff09f06 # v1.0.0
