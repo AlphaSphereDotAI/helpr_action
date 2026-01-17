@@ -14,14 +14,10 @@ runs:
       shell: bash
 
     # TruffleHog
-    - name: Install trufflehog
-      uses: jaxxstorm/action-install-gh-release@6096f2a2bbfee498ced520b6922ac2c06e990ed2 # v2.1.0
-      with:
-        repo: trufflesecurity/trufflehog
-        cache: enable
     - name: Git Secret Scanning
+      if: ${{ inputs.linter == 'trufflehog' }}
       run: >-
-        trufflehog git ${{github.event.repository.html_url}} --branch=${{github.head_ref || github.ref_name}}
+        devenv shell trufflehog git ${{github.event.repository.html_url}} --branch=${{github.head_ref || github.ref_name}}
         --fail --github-actions --results=verified,unknown --log-level=4 --no-update
       shell: bash
 
