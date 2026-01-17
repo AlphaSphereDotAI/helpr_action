@@ -108,6 +108,7 @@ runs:
       if: ${{ inputs.lint == 'true' }}
       with:
         linter: ${{ inputs.linter }}
+        github_token: ${{ inputs.github_token }}
     - name: Release Mode
       uses: ./.github/actions/release
       if: ${{ inputs.release == 'true' }}

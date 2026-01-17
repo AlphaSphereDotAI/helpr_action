@@ -9,7 +9,11 @@
   env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  packages = [ pkgs.git ];
+  packages = with pkgs; [
+    taplo
+    ls-lint
+    trufflehog
+  ];
 
   # https://devenv.sh/languages/
   # languages.rust.enable = true;
@@ -31,6 +35,11 @@
       echo "Running ls-lint"
       ${lib.getExe pkgs.ls-lint} --version
       ${lib.getExe pkgs.ls-lint}
+    '';
+    uv_lock_check.exec = ''
+      echo "Running uv-lock"
+      ${lib.getExe pkgs.uv} --version
+      ${lib.getExe pkgs.uv} lock --check
     '';
     ruff-check.exec = ''
       echo "Running ruff"
@@ -99,6 +108,7 @@
       programs = {
         ruff-format.enable = true;
         ruff-check.enable = true;
+        actionlint.enable = true;
       };
       settings = {
         formatter = {
