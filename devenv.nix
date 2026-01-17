@@ -111,12 +111,12 @@
         ruff-check.enable = true;
         actionlint.enable = true;
         dockfmt.enable = true;
-        dprint = {
-          enable = true;
-          settings = {
-            newLineKind = "lf";
-          };
-        };
+        # dprint = {
+        #   enable = true;
+        #   settings = {
+        #     newLineKind = "lf";
+        #   };
+        # };
         jsonfmt.enable = true;
         nixf-diagnose.enable = true;
         nixfmt.enable = true;
