@@ -70,7 +70,13 @@ runs:
       with:
         token: ${{ inputs.github_token }}
         repository: AlphaSphereDotAI/helpr_action
-        sparse-checkout: .
+        sparse-checkout: |
+          devenv.yaml
+          devenv.nix
+          devenv.lock
+          .envrc
+          .gitignore
+        sparse-checkout-cone-mode: false
     - name: Install Nix
       uses: cachix/install-nix-action@4e002c8ec80594ecd40e759629461e26c8abed15 # v31.9.0
     - name: Cache
