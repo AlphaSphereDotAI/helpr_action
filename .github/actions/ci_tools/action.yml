@@ -4,15 +4,15 @@ inputs:
   opencode_enabled:
     description: Enable opencode tool
     required: false
-    default: 'false'
+    default: "false"
   uv_lock_sync_enabled:
     description: Enable uv lock sync
     required: false
-    default: 'false'
+    default: "false"
   opencode_model:
     description: Opencode model to use
     required: false
-    default: 'opencode/grok-code'
+    default: "opencode/grok-code"
 runs:
   using: composite
   steps:
