@@ -1,26 +1,15 @@
 name: Lint
 description: Run comprehensive linting and code quality checks
+inputs:
+  linter:
+    description: Linter to use
+    required: true
 runs:
   using: composite
   steps:
-    # Taplo format
-    - name: Install taplo
-      uses: baptiste0928/cargo-install@b687c656bda5733207e629b50a22bf68974a0305 # v3.3.2
-      with:
-        crate: taplo-cli
-        locked: true
-    - name: Taplo format
-      run: taplo format --config .github/lint/.taplo.toml
-      shell: bash
-    - name: Commit and push applied Taplo fixes
-      uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
-      with:
-        commit_message: '[Taplo] Apply formatter fixes'
-        commit_options: --no-verify
-
     # Taplo lint
     - name: Taplo lint
-      run: taplo lint --config .github/lint/.taplo.toml --default-schema-catalogs
+      run: devenv shell taplo-lint
       shell: bash
 
     # TruffleHog
@@ -36,30 +25,15 @@ runs:
       shell: bash
 
     # Pre-commit
-    - name: Install uv
-      uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
-      with:
-        enable-cache: true
-        activate-environment: true
-    - name: Restore pre-commit cache
-      uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
-      id: cache-restore
-      with:
-        path: ~/.cache/pre-commit
-        key: pre-commit-${{ hashFiles('**/.pre-commit-config.yaml') }}
-        restore-keys: pre-commit-
     - name: Run pre-commit hooks
-      run: uvx pre-commit run --show-diff-on-failure --color=always --all-files
+      if: ${{ inputs.linter == 'pre-commit' }}
+      run: devenv test
       shell: bash
-    - name: Save pre-commit cache
-      uses: actions/cache/save@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
-      if: always() && steps.cache-restore.outputs.cache-hit != 'true'
+    - name: Commit and push applied fixes
+      uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
       with:
-        path: ~/.cache/pre-commit
-        key: ${{ steps.cache-restore.outputs.cache-primary-key }}
-    - name: Run pre-commit-ci-lite
-      uses: pre-commit-ci/lite-action@5d6cc0eb514c891a40562a58a8e71576c5c7fb43 # v1.1.0
-      if: always()
+        commit_message: "[pre-commit] Apply format fixes"
+        commit_options: --no-verify
 
     # UV Lock Check
     - name: Check if the lockfile is up-to-date
@@ -76,15 +50,14 @@ runs:
 
     # ls-lint
     - name: Lint file names
-      uses: ls-lint/action@02e380fe8733d499cbfc9e22276de5085508a5bd # v2.3.1
-      with:
-        config: .github/lint/.ls-lint.yaml
+      if: ${{ inputs.linter == 'ls-lint' }}
+      run: devenv shell ls-lint-check
+      shell: bash
 
     # Ruff check
     - name: Ruff check
-      uses: astral-sh/ruff-action@57714a7c8a2e59f32539362ba31877a1957dded1 # v3.5.1
-      with:
-        args: check --config .github/lint/.ruff.toml --output-format sarif --output-file ruff.sarif
+      run: devenv shell ruff-check
+      shell: bash
     - name: upload Ruff scan SARIF report
       if: success() || failure()
       uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
@@ -99,7 +72,7 @@ runs:
     - name: Commit and push applied Ruff fixes
       uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
       with:
-        commit_message: '[Ruff] Apply format fixes'
+        commit_message: "[Ruff] Apply format fixes"
         commit_options: --no-verify
 
     # YamlFix
@@ -109,7 +82,7 @@ runs:
     - name: Commit and push applied linter fixes
       uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
       with:
-        commit_message: '[YamlFix] Apply linters fixes'
+        commit_message: "[YamlFix] Apply linters fixes"
         commit_options: --no-verify
 
     # YamlLint
@@ -148,7 +121,7 @@ runs:
         format: sarif
         output: trivy-results-repo.sarif
         github-pat: ${{ secrets.GH_TOKEN }}
-        exit-code: '1'
+        exit-code: "1"
         scanners: vuln,secret,misconfig,license
     - name: Upload Trivy repo scan results to GitHub Security tab
       if: success() || failure()
@@ -165,7 +138,7 @@ runs:
         trivy-config: .github/lint/.trivy.yaml
         format: sarif
         output: trivy-results-config.sarif
-        exit-code: '1'
+        exit-code: "1"
         scanners: vuln,secret,misconfig,license
     - name: Upload Trivy config scan results to GitHub Security tab
       if: success() || failure()
@@ -182,7 +155,7 @@ runs:
         trivy-config: .github/lint/.trivy.yaml
         format: github
         output: dependency-results.sbom.json
-        exit-code: '1'
+        exit-code: "1"
         scanners: vuln,secret,misconfig,license
     - name: Upload trivy report as a Github artifact
       if: success() || failure()
@@ -207,7 +180,7 @@ runs:
     - name: Lint Markdown files
       uses: DavidAnson/markdownlint-cli2-action@07035fd053f7be764496c0f8d8f9f41f98305101 # v22.0.0
       with:
-        globs: '**/*.md'
+        globs: "**/*.md"
         config: .github/lint/.markdownlint.yaml
         fix: true
 

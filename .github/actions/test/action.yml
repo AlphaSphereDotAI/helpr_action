@@ -4,11 +4,11 @@ inputs:
   test_command:
     description: Test command to run
     required: false
-    default: 'pytest'
+    default: "pytest"
   test_args:
     description: Additional test arguments
     required: false
-    default: ''
+    default: ""
 outputs:
   dependency_check_status:
     description: Status of dependency compatibility check

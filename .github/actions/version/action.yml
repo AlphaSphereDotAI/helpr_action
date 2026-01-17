@@ -4,15 +4,15 @@ inputs:
   bump_type:
     description: Type of version bump (patch, minor, major)
     required: false
-    default: 'patch'
+    default: "patch"
   commit_changes:
     description: Whether to commit version changes
     required: false
-    default: 'true'
+    default: "true"
   create_tag:
     description: Whether to create a git tag
     required: false
-    default: 'true'
+    default: "true"
 outputs:
   new_version:
     description: The new version after bumping
@@ -40,7 +40,7 @@ runs:
       if: ${{ inputs.commit_changes == 'true' }}
       uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
       with:
-        commit_message: 'Tag: ${{ steps.get_package_version.outputs.result }}'
+        commit_message: "Tag: ${{ steps.get_package_version.outputs.result }}"
         tagging_message: ${{ steps.get_package_version.outputs.result }}
 
     - name: Create tag manually

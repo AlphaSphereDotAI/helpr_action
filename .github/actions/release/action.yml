@@ -7,7 +7,7 @@ inputs:
   packages_dir:
     description: Directory containing packages to publish
     required: false
-    default: 'dist/'
+    default: "dist/"
 runs:
   using: composite
   steps:
@@ -16,7 +16,7 @@ runs:
       with:
         tag: ${{ inputs.tag_name }}
         out-file-path: ${{ inputs.packages_dir }}
-        fileName: '*'
+        fileName: "*"
 
     - name: Publish release distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
