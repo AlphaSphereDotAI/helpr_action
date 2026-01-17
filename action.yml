@@ -64,8 +64,13 @@ runs:
       with:
         token: ${{ inputs.github_token }}
         fetch-depth: 0
+        path: ${{ github.workspace }}/repo
+    - name: Checkout Helpr repository
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      with:
+        token: ${{ inputs.github_token }}
+        fetch-depth: 0
         repository: AlphaSphereDotAI/helpr_action
-        path: ${{ github.workspace }}/helpr
     - name: Install Nix
       uses: cachix/install-nix-action@4e002c8ec80594ecd40e759629461e26c8abed15 # v31.9.0
     - name: Cache
