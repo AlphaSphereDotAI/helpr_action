@@ -4,6 +4,9 @@ inputs:
   linter:
     description: Linter to use
     required: true
+  github_token:
+    description: GitHub Token
+    required: false
 runs:
   using: composite
   steps:
@@ -29,8 +32,9 @@ runs:
       shell: bash
     - name: Commit and push applied fixes
       uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
+      if: ${{ inputs.linter == 'pre-commit' }}
       with:
-        commit_message: "[pre-commit] Apply format fixes"
+        commit_message: '[pre-commit] Apply format fixes'
         commit_options: --no-verify
 
     # UV Lock Check
@@ -41,7 +45,7 @@ runs:
       shell: bash
     - name: Job Summary
       uses: jazanne/job-summary-action@690eb386a0b86fe4da7c6f0e543e61330ff09f06 # v1.0.0
-      if: success() || failure()
+      if: ${{ (success() || failure()) && inputs.linter == 'uv-lock' }}
       with:
         summary: |
           ## UV Lock Check
@@ -66,22 +70,26 @@ runs:
 
     # YamlFix
     - name: Format
+      if: ${{ inputs.linter == 'yamlfix' }}
       run: uvx yamlfix . --config-file .github/lint/.yamlfix.toml
       shell: bash
     - name: Commit and push applied linter fixes
       uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
+      if: ${{ inputs.linter == 'yamlfix' }}
       with:
-        commit_message: "[YamlFix] Apply linters fixes"
+        commit_message: '[YamlFix] Apply linters fixes'
         commit_options: --no-verify
 
     # YamlLint
     - name: Check
+      if: ${{ inputs.linter == 'yamllint' }}
       run: uvx yamllint . --strict -c=.github/lint/.yamllint.yaml --format github
       shell: bash
 
     # Syft
     - name: SBOM Generation
       uses: anchore/sbom-action@0b82b0b1a22399a1c542d4d656f70cd903571b5c # v0.21.1
+      if: ${{ inputs.linter == 'syft' }}
       with:
         path: .
         dependency-snapshot: true
@@ -91,12 +99,13 @@ runs:
     # Grype
     - name: Scan current project
       uses: anchore/scan-action@62b74fb7bb810d2c45b1865f47a77655621862a5 # v7.2.3
+      if: ${{ inputs.linter == 'grype' }}
       id: scan
       with:
         path: .
         cache-db: true
     - name: upload Anchore scan SARIF report
-      if: success() || failure()
+      if: ${{ (success() || failure()) && inputs.linter == 'grype' }}
       uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
       with:
         sarif_file: ${{ steps.scan.outputs.sarif }}
@@ -104,16 +113,17 @@ runs:
     # Trivy repo scan
     - name: Run Trivy vulnerability scanner in repo mode
       uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
+      if: ${{ inputs.linter == 'trivy-repo' }}
       with:
         scan-type: repo
         trivy-config: .github/lint/.trivy.yaml
         format: sarif
         output: trivy-results-repo.sarif
-        github-pat: ${{ secrets.GH_TOKEN }}
-        exit-code: "1"
+        github-pat: ${{ inputs.github_token }}
+        exit-code: '1'
         scanners: vuln,secret,misconfig,license
     - name: Upload Trivy repo scan results to GitHub Security tab
-      if: success() || failure()
+      if: ${{ (success() || failure()) && inputs.linter == 'trivy-repo' }}
       uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
       with:
         sarif_file: trivy-results-repo.sarif
@@ -122,15 +132,16 @@ runs:
     # Trivy config scan
     - name: Run Trivy vulnerability scanner in config mode
       uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
+      if: ${{ inputs.linter == 'trivy-config' }}
       with:
         scan-type: config
         trivy-config: .github/lint/.trivy.yaml
         format: sarif
         output: trivy-results-config.sarif
-        exit-code: "1"
+        exit-code: '1'
         scanners: vuln,secret,misconfig,license
     - name: Upload Trivy config scan results to GitHub Security tab
-      if: success() || failure()
+      if: ${{ (success() || failure()) && inputs.linter == 'trivy-config' }}
       uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
       with:
         sarif_file: trivy-results-config.sarif
@@ -139,15 +150,16 @@ runs:
     # Trivy filesystem scan
     - name: Run Trivy vulnerability scanner in filesystem mode
       uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
+      if: ${{ inputs.linter == 'trivy-fs' }}
       with:
         scan-type: fs
         trivy-config: .github/lint/.trivy.yaml
         format: github
         output: dependency-results.sbom.json
-        exit-code: "1"
+        exit-code: '1'
         scanners: vuln,secret,misconfig,license
     - name: Upload trivy report as a Github artifact
-      if: success() || failure()
+      if: ${{ (success() || failure()) && inputs.linter == 'trivy-fs' }}
       uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       with:
         name: trivy-sbom-report
@@ -156,49 +168,36 @@ runs:
     # DCLint
     - name: Lint Docker Compose file
       uses: docker-compose-linter/dclint-github-action@18659f6a7956706cb67cf9c1ad5e55f4352cbc17 # v1.6.0
+      if: ${{ inputs.linter == 'dclint' }}
       with:
         fix: true
         recursive: true
 
     # Ty
     - name: Check
+      if: ${{ inputs.linter == 'ty' }}
       run: uvx ty check --output-format github
       shell: bash
 
     # MarkdownLint
     - name: Lint Markdown files
       uses: DavidAnson/markdownlint-cli2-action@07035fd053f7be764496c0f8d8f9f41f98305101 # v22.0.0
+      if: ${{ inputs.linter == 'markdownlint' }}
       with:
-        globs: "**/*.md"
+        globs: '**/*.md'
         config: .github/lint/.markdownlint.yaml
         fix: true
 
     # Hadolint
     - name: Lint Dockerfile
       uses: hadolint/hadolint-action@2332a7b74a6de0dda2e2221d575162eba76ba5e5 # v3.3.0
+      if: ${{ inputs.linter == 'hadolint' }}
       with:
         config: .github/lint/.hadolint.yaml
         format: sarif
         output-file: hadolint.sarif
     - name: upload Hadolint scan SARIF report
-      if: success() || failure()
+      if: ${{ (success() || failure()) && inputs.linter == 'hadolint' }}
       uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
       with:
         sarif_file: hadolint.sarif
-
-    # ActionLint
-    - name: Install actionlint
-      uses: jaxxstorm/action-install-gh-release@6096f2a2bbfee498ced520b6922ac2c06e990ed2 # v2.1.0
-      with:
-        repo: rhysd/actionlint
-        cache: enable
-    - name: Download actionlint-matcher.json
-      run: >-
-        curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/.github/actionlint-matcher.json
-        -o .github/actionlint-matcher.json
-      shell: bash
-    - name: Run actionlint
-      run: |-
-        echo "::add-matcher::.github/actionlint-matcher.json"
-        actionlint -color
-      shell: bash
