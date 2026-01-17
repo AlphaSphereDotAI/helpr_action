@@ -108,6 +108,7 @@
       programs = {
         ruff-format.enable = true;
         ruff-check.enable = true;
+        actionlint.enable = true;
       };
       settings = {
         formatter = {
