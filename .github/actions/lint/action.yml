@@ -64,17 +64,6 @@ runs:
       with:
         sarif_file: ruff.sarif
 
-    # Ruff format
-    - name: Ruff format
-      uses: astral-sh/ruff-action@57714a7c8a2e59f32539362ba31877a1957dded1 # v3.5.1
-      with:
-        args: format --config .github/lint/.ruff.toml --output-format github
-    - name: Commit and push applied Ruff fixes
-      uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
-      with:
-        commit_message: "[Ruff] Apply format fixes"
-        commit_options: --no-verify
-
     # YamlFix
     - name: Format
       run: uvx yamlfix . --config-file .github/lint/.yamlfix.toml
