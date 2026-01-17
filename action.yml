@@ -1,9 +1,34 @@
 name: Helpr Action
 description: Helpr Action is a GitHub Action that helps AlphaSphere.AI team.
 inputs:
-  build_image:
+  build_container:
     required: true
-    description: Build Image
+    description: Build Container
+    default: "false"
+  build_python:
+    required: true
+    description: Build Python Package
+    default: "false"
+  ci_tools:
+    required: true
+    description: Install CI Tools
+    default: "false"
+  lint:
+    required: true
+    description: Lint Code
+    default: "false"
+  release:
+    required: true
+    description: Release Mode
+    default: "false"
+  test:
+    required: true
+    description: Test Code
+    default: "false"
+  version:
+    required: true
+    description: Bump Version
+    default: "false"
   is_test:
     required: true
     description: Test Mode
@@ -13,18 +38,55 @@ inputs:
   install_source:
     required: true
     description: Source to install from (e.g., PyPI Package or Git source)
+  github_token:
+    required: true
+    description: GitHub Token
+  opencode_enabled:
+    description: Enable opencode tool
+    required: false
+    default: "false"
+  uv_lock_sync_enabled:
+    description: Enable uv lock sync
+    required: false
+    default: "false"
+  opencode_model:
+    description: Opencode model to use
+    required: false
+    default: "opencode/grok-code"
 runs:
   using: composite
   steps:
     - name: Checkout repository
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       with:
-        token: ${{ secrets.GH_TOKEN }}
+        token: ${{ inputs.github_token }}
         fetch-depth: 0
-    - name: Build Image
-      uses: ./.github/actions/container_image
-      if: ${{ inputs.build_image == 'true' }}
+    - name: Build Container
+      uses: ./.github/actions/build_container
+      if: ${{ inputs.build_container == 'true' }}
       with:
         is_test: ${{ inputs.is_test }}
         registry: ${{ inputs.registry }}
         install_source: ${{ inputs.install_source }}
+    - name: Build Python Package
+      uses: ./.github/actions/build_python
+      if: ${{ inputs.build_python == 'true' }}
+    - name: CI Tools
+      uses: ./.github/actions/ci_tools
+      if: ${{ inputs.ci_tools == 'true' }}
+      with:
+        opencode_enabled: ${{ inputs.opencode_enabled }}
+        uv_lock_sync_enabled: ${{ inputs.uv_lock_sync_enabled }}
+        opencode_model: ${{ inputs.opencode_model }}
+    - name: Lint Code
+      uses: ./.github/actions/lint
+      if: ${{ inputs.lint == 'true' }}
+    - name: Release Mode
+      uses: ./.github/actions/release
+      if: ${{ inputs.release == 'true' }}
+    - name: Test Mode
+      uses: ./.github/actions/test
+      if: ${{ inputs.test == 'true' }}
+    - name: Bump Version
+      uses: ./.github/actions/version
+      if: ${{ inputs.version == 'true' }}
