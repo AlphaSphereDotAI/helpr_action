@@ -100,6 +100,7 @@
     uv-check.enable = true;
     uv-lock.enable = true;
     yamllint.enable = true;
+    hadolint.enable = true;
   };
 
   treefmt = {
