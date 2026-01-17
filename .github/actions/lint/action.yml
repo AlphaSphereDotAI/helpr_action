@@ -55,10 +55,11 @@ runs:
 
     # Ruff check
     - name: Ruff check
+      if: ${{ inputs.linter == 'ruff' }}
       run: devenv shell ruff-check
       shell: bash
     - name: upload Ruff scan SARIF report
-      if: success() || failure()
+      if: ${{ (success() || failure()) && inputs.linter == 'ruff' }}
       uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
       with:
         sarif_file: ruff.sarif
