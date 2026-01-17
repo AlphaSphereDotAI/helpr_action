@@ -11,7 +11,7 @@ pull_request_rules:
   - name: Merge pull request when the configuration of Mergify is valid
     conditions:
       - author = MH0386
-      - 'title = ci(Mergify): configuration update'
+      - "title = ci(Mergify): configuration update"
       - head = mergify/MH0386/config-update
     actions:
       merge:
