@@ -36,6 +36,11 @@
       ${lib.getExe pkgs.ls-lint} --version
       ${lib.getExe pkgs.ls-lint}
     '';
+    uv_lock_check.exec = ''
+      echo "Running uv-lock"
+      ${lib.getExe pkgs.uv} --version
+      ${lib.getExe pkgs.uv} lock --check
+    '';
     ruff-check.exec = ''
       echo "Running ruff"
       ${lib.getExe pkgs.ruff} --version
