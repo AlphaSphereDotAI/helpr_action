@@ -6,7 +6,7 @@ on:
     branches:
       - main
     tags:
-      - "v*.*.*"
+      - 'v*.*.*'
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.id || github.ref_name }}
   cancel-in-progress: true
@@ -77,3 +77,32 @@ jobs:
         with:
           commit_message: 'Tag: ${{ steps.get_git_version.outputs.result }}'
           tagging_message: ${{ steps.get_git_version.outputs.result }}
+  release:
+    name: Release
+    needs: tag
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: write
+      issues: write
+    if: >-
+      ${{
+        github.event_name == 'push' &&
+        github.ref_type == 'tag'
+      }}
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+        with:
+          generate_release_notes: true
+          make_latest: true
