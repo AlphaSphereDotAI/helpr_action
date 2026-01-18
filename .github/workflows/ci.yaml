@@ -52,7 +52,8 @@ jobs:
       ${{
           github.actor == 'mergify[bot]' &&
           contains(github.event.head_commit.message, 'chore(deps): update alphaspheredotai/helpr_action') &&
-          github.event_name == 'push'
+          github.event_name == 'push' &&
+          github.ref_type == 'branch'
       }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
