@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   test:
-    name: Run Tests
+    name: Test
     runs-on: ubuntu-latest
     environment:
       name: code_quality
