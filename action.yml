@@ -95,7 +95,7 @@ runs:
       if: ${{ steps.check_devenv_files.outcome == 'success' }}
       uses: mikefarah/yq@065b200af9851db0d5132f50bc10b1406ea5c0a8 # v4.50.1
       with:
-        cmd: yq -iroy '.imports = ["/repo"]' devenv.yaml
+        cmd: yq -iroy '.imports = ["./repo"]' devenv.yaml
     - name: Install Nix
       uses: cachix/install-nix-action@4e002c8ec80594ecd40e759629461e26c8abed15 # v31.9.0
     - name: Cache
