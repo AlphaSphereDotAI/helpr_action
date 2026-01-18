@@ -104,34 +104,34 @@ runs:
     - run: ls -lah
       shell: bash
     - name: Build Container
-      uses: AlphaSphereDotAI/helpr_action/build_container@v0.0.1
+      uses: AlphaSphereDotAI/helpr_action/build_container@4c068cdd5ee32ab0ea8b6d53e67ce6b49338ce54 # v0.0.1
       if: ${{ inputs.build_container == 'true' }}
       with:
         is_test: ${{ inputs.is_test }}
         registry: ${{ inputs.registry }}
         install_source: ${{ inputs.install_source }}
     - name: Build Python Package
-      uses: AlphaSphereDotAI/helpr_action/build_python@v0.0.1
+      uses: AlphaSphereDotAI/helpr_action/build_python@4c068cdd5ee32ab0ea8b6d53e67ce6b49338ce54 # v0.0.1
       if: ${{ inputs.build_python == 'true' }}
     - name: CI Tools
-      uses: AlphaSphereDotAI/helpr_action/ci_tools@v0.0.1
+      uses: AlphaSphereDotAI/helpr_action/ci_tools@4c068cdd5ee32ab0ea8b6d53e67ce6b49338ce54 # v0.0.1
       if: ${{ inputs.ci_tools == 'true' }}
       with:
         opencode_enabled: ${{ inputs.opencode_enabled }}
         uv_lock_sync_enabled: ${{ inputs.uv_lock_sync_enabled }}
         opencode_model: ${{ inputs.opencode_model }}
     - name: Lint Code
-      uses: AlphaSphereDotAI/helpr_action/lint@v0.0.1
+      uses: AlphaSphereDotAI/helpr_action/lint@4c068cdd5ee32ab0ea8b6d53e67ce6b49338ce54 # v0.0.1
       if: ${{ inputs.lint == 'true' }}
       with:
         linter: ${{ inputs.linter }}
         github_token: ${{ inputs.github_token }}
     - name: Release Mode
-      uses: AlphaSphereDotAI/helpr_action/release@v0.0.1
+      uses: AlphaSphereDotAI/helpr_action/release@4c068cdd5ee32ab0ea8b6d53e67ce6b49338ce54 # v0.0.1
       if: ${{ inputs.release == 'true' }}
     - name: Test Mode
-      uses: AlphaSphereDotAI/helpr_action/test@v0.0.1
+      uses: AlphaSphereDotAI/helpr_action/test@4c068cdd5ee32ab0ea8b6d53e67ce6b49338ce54 # v0.0.1
       if: ${{ inputs.test == 'true' }}
     - name: Bump Version
-      uses: AlphaSphereDotAI/helpr_action/version@v0.0.1
+      uses: AlphaSphereDotAI/helpr_action/version@4c068cdd5ee32ab0ea8b6d53e67ce6b49338ce54 # v0.0.1
       if: ${{ inputs.version == 'true' }}
