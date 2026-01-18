@@ -10,6 +10,12 @@ inputs:
   install_source:
     required: true
     description: Source to install from (e.g., PyPI Package or Git source)
+  github_token:
+    required: false
+    description: GitHub Token
+  docker_token:
+    required: false
+    description: Docker Registry Token
 outputs:
   image_tag:
     description: The built image tag
@@ -57,7 +63,11 @@ runs:
       with:
         registry: ${{ inputs.registry }}
         username: mh0386
-        password: ${{ inputs.registry == 'ghcr.io' && secrets.GH_TOKEN || inputs.registry == 'docker.io' && secrets.TOKEN_KEY_DOCKER }}
+        password: >-
+          ${{
+            inputs.registry == 'ghcr.io' && inputs.github_token ||
+            inputs.registry == 'docker.io' && inputs.docker_token
+          }}
     - name: Set up QEMU
       uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
     - name: Set up Docker Buildx
@@ -90,7 +100,10 @@ runs:
       uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
       if: ${{ inputs.is_test == false }}
       with:
-        subject-name: ${{ inputs.registry == 'docker.io' && 'index.docker.io' || inputs.registry }}/${{github.repository}}
+        subject-name: >-
+          ${{
+            inputs.registry == 'docker.io' && 'index.docker.io' || inputs.registry
+          }}/${{github.repository}}
         subject-digest: ${{ steps.push.outputs.digest }}
         push-to-registry: true
     - name: Update Docker Hub Description
@@ -98,7 +111,7 @@ runs:
       uses: peter-evans/dockerhub-description@1b9a80c056b620d92cedb9d9b5a223409c68ddfa # v5.0.0
       with:
         username: mh0386
-        password: ${{ secrets.TOKEN_KEY_DOCKER }}
+        password: ${{ inputs.docker_token }}
         repository: ${{ github.repository }}
         short-description: ${{ github.event.repository.description }}
         enable-url-completion: true
@@ -112,9 +125,9 @@ runs:
       with:
         command: cves
         dockerhub-user: mh0386
-        dockerhub-password: ${{ secrets.TOKEN_KEY_DOCKER }}
+        dockerhub-password: ${{ inputs.docker_token }}
         image: ${{ steps.tag.outputs.TAG }}
-        github-token: ${{ secrets.GH_TOKEN }}
+        github-token: ${{ inputs.github_token }}
     # trufflehog
     - name: Install trufflehog
       uses: jaxxstorm/action-install-gh-release@6096f2a2bbfee498ced520b6922ac2c06e990ed2 # v2.1.0
@@ -124,7 +137,8 @@ runs:
     - name: Docker Secret Scanning
       shell: bash
       run: >-
-        trufflehog docker --image ${{steps.tag.outputs.TAG}} --fail --github-actions --results=verified --log-level=4 --no-update
+        trufflehog docker --image ${{steps.tag.outputs.TAG}}
+        --fail --github-actions --results=verified --log-level=4 --no-update
     # syft
     - name: SBOM Generation
       uses: anchore/sbom-action@0b82b0b1a22399a1c542d4d656f70cd903571b5c # v0.21.1
