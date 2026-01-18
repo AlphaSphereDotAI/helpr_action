@@ -74,6 +74,7 @@
     ls-lint
     trufflehog
     yq-go
+    semver
   ];
 
   # https://devenv.sh/languages/
@@ -94,9 +95,9 @@
   # scripts = { };
 
   # https://devenv.sh/basics/
-  enterShell = ''
-    git --version
-  '';
+  # enterShell = ''
+  #   git --version
+  # '';
 
   # https://devenv.sh/tasks/
   tasks = {
