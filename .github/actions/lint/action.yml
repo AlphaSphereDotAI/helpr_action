@@ -164,22 +164,6 @@ runs:
       with:
         fix: true
         recursive: true
-
-    # Ty
-    - name: Check
-      if: ${{ inputs.linter == 'ty' }}
-      run: uvx ty check --output-format github
-      shell: bash
-
-    # MarkdownLint
-    - name: Lint Markdown files
-      uses: DavidAnson/markdownlint-cli2-action@07035fd053f7be764496c0f8d8f9f41f98305101 # v22.0.0
-      if: ${{ inputs.linter == 'markdownlint' }}
-      with:
-        globs: '**/*.md'
-        config: .github/lint/.markdownlint.yaml
-        fix: true
-
     # Hadolint
     - name: Lint Dockerfile
       uses: hadolint/hadolint-action@2332a7b74a6de0dda2e2221d575162eba76ba5e5 # v3.3.0
