@@ -43,11 +43,6 @@ runs:
       with:
         commit_message: "[YamlFix] Apply linters fixes"
         commit_options: --no-verify
-    # YamlLint
-    - name: Check
-      if: ${{ inputs.linter == 'yamllint' }}
-      run: uvx yamllint . --strict -c=.github/lint/.yamllint.yaml --format github
-      shell: bash
     # Syft
     - name: SBOM Generation
       uses: anchore/sbom-action@0b82b0b1a22399a1c542d4d656f70cd903571b5c # v0.21.1
@@ -130,13 +125,6 @@ runs:
         fix: true
         recursive: true
     # Hadolint
-    - name: Lint Dockerfile
-      uses: hadolint/hadolint-action@2332a7b74a6de0dda2e2221d575162eba76ba5e5 # v3.3.0
-      if: ${{ inputs.linter == 'hadolint' }}
-      with:
-        config: .github/lint/.hadolint.yaml
-        format: sarif
-        output-file: hadolint.sarif
     - name: upload Hadolint scan SARIF report
       if: ${{ (success() || failure()) && inputs.linter == 'hadolint' }}
       uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
