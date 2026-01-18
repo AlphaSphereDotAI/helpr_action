@@ -21,12 +21,10 @@ runs:
       with:
         enable-cache: true
         activate-environment: true
-
     - name: Install the project
       id: dependency_check
       run: uv sync --frozen --no-install-project
       shell: bash
-
     - name: Job Summary
       uses: jazanne/job-summary-action@690eb386a0b86fe4da7c6f0e543e61330ff09f06 # v1.0.0
       if: success() || failure()
@@ -34,7 +32,6 @@ runs:
         summary: |-
           ## Dependency Compatibility Check
             - **Status**: ${{ steps.dependency_check.outcome == 'success' && ':white_check_mark:' || ':x:' }}
-
     - name: Show Dependency Tree
       if: steps.dependency_check.outcome == 'success'
       run: |
@@ -47,12 +44,10 @@ runs:
         echo '```' >> $GITHUB_STEP_SUMMARY
         echo "</details>" >> $GITHUB_STEP_SUMMARY
       shell: bash
-
     - name: Install test dependencies
       if: steps.dependency_check.outcome == 'success'
       run: uv sync --only-dev
       shell: bash
-
     - name: Run tests
       if: steps.dependency_check.outcome == 'success'
       run: ${{ inputs.test_command }} ${{ inputs.test_args }}
