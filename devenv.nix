@@ -123,7 +123,7 @@
     markdownlint.enable = true;
     mixed-line-endings.enable = true;
     name-tests-test.enable = true;
-    prettier.enable = true;
+    yamlfmt.enable = true;
     python-debug-statements.enable = true;
     ripsecrets.enable = true;
     ruff.enable = true;
@@ -157,7 +157,6 @@
         nixfmt.enable = true;
         deadnix.enable = true;
         oxipng.enable = true;
-        prettier.enable = true;
         shellcheck.enable = true;
         shfmt.enable = true;
         statix.enable = true;
