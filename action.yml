@@ -86,6 +86,8 @@ runs:
     - name: Install devenv.sh
       run: nix profile install nixpkgs#devenv
       shell: bash
+    - run: ls -lah
+      shell: bash
     - name: Build Container
       uses: ./.github/actions/build_container
       if: ${{ inputs.build_container == 'true' }}
