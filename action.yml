@@ -70,6 +70,7 @@ runs:
       with:
         token: ${{ inputs.github_token }}
         repository: AlphaSphereDotAI/helpr_action
+        path: ${{ github.workspace }}
         sparse-checkout: |
           devenv.yaml
           devenv.nix
