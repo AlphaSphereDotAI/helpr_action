@@ -37,3 +37,40 @@ jobs:
         with:
           commit_message: 'devenv: Apply Fixes'
           commit_options: --no-verify
+  tag:
+    name: Tag
+    runs-on: ubuntu-latest
+    environment: tagging
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: write
+      issues: write
+    if: >-
+      ${{
+          github.actor == 'mergify[bot]' &&
+          contains(github.event.head_commit.message, 'chore(deps): update alphaspheredotai/helpr_action') &&
+          github.event_name == 'push'
+      }}
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - name: Setup Devenv
+        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@main
+      - name: Enter devenv shell
+        run: devenv shell
+      - name: Bump git version
+        id: get_git_version
+        run: echo "result=$(semver patch)" >> "$GITHUB_OUTPUT"
+      - name: Tag
+        id: tag
+        uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
+        with:
+          commit_message: 'Tag: ${{ steps.get_git_version.outputs.result }}'
+          tagging_message: ${{ steps.get_git_version.outputs.result }}
