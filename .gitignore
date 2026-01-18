@@ -11,3 +11,4 @@ devenv.local.yaml
 
 .yamllint.yaml
 .ruff.toml
+.vscode/settings.json

@@ -78,6 +78,21 @@ runs:
         token: ${{ inputs.github_token }}
         fetch-depth: 0
         path: ${{ github.workspace }}/repo
+    - name: Check /repo has devenv files
+      id: check_devenv_files
+      run: |
+        if [ ! -f "./repo/devenv.yaml" ]; then
+          echo "devenv.yaml not found in the repository root."
+          exit 1
+        fi
+        echo "Devenv files found."
+        exit 0
+      shell: bash
+    - name: Update devenv imports
+      if: ${{ steps.check_devenv_files.outcome == 'success' }}
+      uses: mikefarah/yq@065b200af9851db0d5132f50bc10b1406ea5c0a8 # v4.50.1
+      with:
+        cmd: yq -iroy '.imports = ["/repo"]' devenv.yaml
     - name: Install Nix
       uses: cachix/install-nix-action@4e002c8ec80594ecd40e759629461e26c8abed15 # v31.9.0
     - name: Cache

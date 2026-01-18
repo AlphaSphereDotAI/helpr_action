@@ -54,7 +54,7 @@
   };
 
   # https://devenv.sh/basics/
-  env.GREET = "devenv";
+  # env.GREET = "devenv";
 
   # https://devenv.sh/packages/
   packages = with pkgs; [
@@ -64,7 +64,12 @@
   ];
 
   # https://devenv.sh/languages/
-  # languages.rust.enable = true;
+  languages = {
+    nix = {
+      enable = true;
+      lsp.enable = true;
+    };
+  };
 
   # https://devenv.sh/processes/
   # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
@@ -73,28 +78,7 @@
   # services.postgres.enable = true;
 
   # https://devenv.sh/scripts/
-  scripts = {
-    taplo-lint.exec = ''
-      echo "Running taplo"
-      ${lib.getExe pkgs.taplo} --version
-      ${lib.getExe pkgs.taplo} lint --default-schema-catalogs
-    '';
-    ls-lint-check.exec = ''
-      echo "Running ls-lint"
-      ${lib.getExe pkgs.ls-lint} --version
-      ${lib.getExe pkgs.ls-lint}
-    '';
-    uv_lock_check.exec = ''
-      echo "Running uv-lock"
-      ${lib.getExe pkgs.uv} --version
-      ${lib.getExe pkgs.uv} lock --check
-    '';
-    ruff-check.exec = ''
-      echo "Running ruff"
-      ${lib.getExe pkgs.ruff} --version
-      ${lib.getExe pkgs.ruff} check --output-format sarif --output-file ruff.sarif .
-    '';
-  };
+  # scripts = { };
 
   # https://devenv.sh/basics/
   enterShell = ''
@@ -102,10 +86,13 @@
   '';
 
   # https://devenv.sh/tasks/
-  # tasks = {
-  #   "myproj:setup".exec = "mytool build";
-  #   "devenv:enterShell".after = [ "myproj:setup" ];
-  # };
+  tasks = {
+    "lint:ruff".exec = "${lib.getExe pkgs.ruff} check --output-format sarif --output-file ruff.sarif";
+    "lint:uv_lock_check".exec = "${lib.getExe pkgs.uv} lock --check";
+    "lint:ls-lint".exec = "${lib.getExe pkgs.ls-lint}";
+    "lint:taplo".exec = "${lib.getExe pkgs.taplo} lint --default-schema-catalogs";
+    "lint:ty".exec = "${lib.getExe pkgs.ty} check --output-format github";
+  };
 
   # https://devenv.sh/tests/
   # enterTest = ''
@@ -168,6 +155,7 @@
         jsonfmt.enable = true;
         nixf-diagnose.enable = true;
         nixfmt.enable = true;
+        deadnix.enable = true;
         oxipng.enable = true;
         prettier.enable = true;
         shellcheck.enable = true;
