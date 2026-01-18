@@ -155,6 +155,7 @@
         jsonfmt.enable = true;
         nixf-diagnose.enable = true;
         nixfmt.enable = true;
+        deadnix.enable = true;
         oxipng.enable = true;
         prettier.enable = true;
         shellcheck.enable = true;
