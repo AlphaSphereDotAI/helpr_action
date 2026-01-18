@@ -125,7 +125,7 @@ runs:
         uv_lock_sync_enabled: ${{ inputs.uv_lock_sync_enabled }}
         opencode_model: ${{ inputs.opencode_model }}
     - name: Lint Code
-      uses: AlphaSphereDotAI/helpr_action/.github/actions/lint@main
+      uses: AlphaSphereDotAI/helpr_action/lint@main
       if: ${{ inputs.lint == 'true' }}
       with:
         linter: ${{ inputs.linter }}
