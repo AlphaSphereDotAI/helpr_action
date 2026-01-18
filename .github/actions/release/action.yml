@@ -17,7 +17,6 @@ runs:
         tag: ${{ inputs.tag_name }}
         out-file-path: ${{ inputs.packages_dir }}
         fileName: "*"
-
     - name: Publish release distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
