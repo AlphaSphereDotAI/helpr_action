@@ -61,6 +61,7 @@
     taplo
     ls-lint
     trufflehog
+    yq-go
   ];
 
   # https://devenv.sh/languages/
