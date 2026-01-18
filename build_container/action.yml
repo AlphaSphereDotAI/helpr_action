@@ -36,6 +36,7 @@ runs:
     # build_image
     - name: Free Disk Space
       uses: endersonmenezes/free-disk-space@e6ed9b02e683a3b55ed0252f1ee469ce3b39a885 # v3.1.0
+      if: ${{ steps.dockerfile_lint.outcome == 'success' }}
       with:
         remove_android: true
         remove_dotnet: true
