@@ -20,6 +20,7 @@ runs:
     - name: Run pre-commit hooks
       if: ${{ inputs.linter == 'pre-commit' }}
       run: devenv test
+      working-directory: ${{ github.workspace }}/repo
       shell: bash
     - name: Commit and push applied fixes
       uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0

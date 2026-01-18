@@ -106,7 +106,6 @@ runs:
     - name: Lint Code
       uses: AlphaSphereDotAI/helpr_action/.github/actions/lint@main
       if: ${{ inputs.lint == 'true' }}
-      working-directory: ${{ github.workspace }}/repo
       with:
         linter: ${{ inputs.linter }}
         github_token: ${{ inputs.github_token }}
