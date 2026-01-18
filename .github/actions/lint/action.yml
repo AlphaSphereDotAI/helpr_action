@@ -27,19 +27,6 @@ runs:
       with:
         commit_message: "[pre-commit] Apply format fixes"
         commit_options: --no-verify
-    # UV Lock Check
-    - name: Check if the lockfile is up-to-date
-      if: ${{ inputs.linter == 'uv-lock' }}
-      id: uv_lock_check
-      run: devenv shell uv_lock_check
-      shell: bash
-    - name: Job Summary
-      uses: jazanne/job-summary-action@690eb386a0b86fe4da7c6f0e543e61330ff09f06 # v1.0.0
-      if: ${{ (success() || failure()) && inputs.linter == 'uv-lock' }}
-      with:
-        summary: |
-          ## UV Lock Check
-          - **Status**: ${{ steps.uv_lock_check.outcome == 'success' && ':white_check_mark:' || ':x:' }}
     # ls-lint
     - name: Lint file names
       if: ${{ inputs.linter == 'ls-lint' }}
