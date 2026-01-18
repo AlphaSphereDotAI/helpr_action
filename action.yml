@@ -108,17 +108,17 @@ runs:
     - run: ls -lah
       shell: bash
     - name: Build Container
-      uses: ./.github/actions/build_container
+      uses: AlphaSphereDotAI/helpr_action/build_container@main
       if: ${{ inputs.build_container == 'true' }}
       with:
         is_test: ${{ inputs.is_test }}
         registry: ${{ inputs.registry }}
         install_source: ${{ inputs.install_source }}
     - name: Build Python Package
-      uses: ./.github/actions/build_python
+      uses: AlphaSphereDotAI/helpr_action/build_python@main
       if: ${{ inputs.build_python == 'true' }}
     - name: CI Tools
-      uses: ./.github/actions/ci_tools
+      uses: AlphaSphereDotAI/helpr_action/ci_tools@main
       if: ${{ inputs.ci_tools == 'true' }}
       with:
         opencode_enabled: ${{ inputs.opencode_enabled }}
@@ -131,11 +131,11 @@ runs:
         linter: ${{ inputs.linter }}
         github_token: ${{ inputs.github_token }}
     - name: Release Mode
-      uses: ./.github/actions/release
+      uses: AlphaSphereDotAI/helpr_action/release@main
       if: ${{ inputs.release == 'true' }}
     - name: Test Mode
-      uses: ./.github/actions/test
+      uses: AlphaSphereDotAI/helpr_action/test@main
       if: ${{ inputs.test == 'true' }}
     - name: Bump Version
-      uses: ./.github/actions/version
+      uses: AlphaSphereDotAI/helpr_action/version@main
       if: ${{ inputs.version == 'true' }}
