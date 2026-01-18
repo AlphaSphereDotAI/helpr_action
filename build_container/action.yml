@@ -65,6 +65,17 @@ runs:
         username: mh0386
         password: >-
           ${{
+
+
+
+
+
+
+
+
+
+
+
             inputs.registry == 'ghcr.io' && inputs.github_token ||
             inputs.registry == 'docker.io' && inputs.docker_token
           }}
@@ -102,6 +113,17 @@ runs:
       with:
         subject-name: >-
           ${{
+
+
+
+
+
+
+
+
+
+
+
             inputs.registry == 'docker.io' && 'index.docker.io' || inputs.registry
           }}/${{github.repository}}
         subject-digest: ${{ steps.push.outputs.digest }}
@@ -137,8 +159,7 @@ runs:
     - name: Docker Secret Scanning
       shell: bash
       run: >-
-        trufflehog docker --image ${{steps.tag.outputs.TAG}}
-        --fail --github-actions --results=verified --log-level=4 --no-update
+        trufflehog docker --image ${{steps.tag.outputs.TAG}} --fail --github-actions --results=verified --log-level=4 --no-update
     # syft
     - name: SBOM Generation
       uses: anchore/sbom-action@0b82b0b1a22399a1c542d4d656f70cd903571b5c # v0.21.1
