@@ -4,31 +4,31 @@ inputs:
   build_container:
     required: false
     description: Build Container
-    default: "false"
+    default: 'false'
   build_python:
     required: false
     description: Build Python Package
-    default: "false"
+    default: 'false'
   ci_tools:
     required: false
     description: Install CI Tools
-    default: "false"
+    default: 'false'
   lint:
     required: false
     description: Lint Code
-    default: "false"
+    default: 'false'
   release:
     required: false
     description: Release Mode
-    default: "false"
+    default: 'false'
   test:
     required: false
     description: Test Code
-    default: "false"
+    default: 'false'
   version:
     required: false
     description: Bump Version
-    default: "false"
+    default: 'false'
   is_test:
     required: true
     description: Test Mode
@@ -44,15 +44,15 @@ inputs:
   opencode_enabled:
     description: Enable opencode tool
     required: false
-    default: "false"
+    default: 'false'
   uv_lock_sync_enabled:
     description: Enable uv lock sync
     required: false
-    default: "false"
+    default: 'false'
   opencode_model:
     description: Opencode model to use
     required: false
-    default: "opencode/grok-code"
+    default: 'opencode/grok-code'
   linter:
     description: Linter to use
     required: false
