@@ -15,6 +15,18 @@
         line-length.max = 120;
       };
     };
+    ".yamlfmt.yaml".yaml = {
+      line_ending = "lf";
+      formatter = {
+        type = "basic";
+        line_ending = "lf";
+        trim_trailing_whitespace = true;
+        eof_newline = true;
+        force_array_style = "block";
+        force_quote_style = "double";
+        scan_folded_as_literal = true;
+      };
+    };
     ".ruff.toml".toml = {
       target-version = "py313";
       line-length = 120;
