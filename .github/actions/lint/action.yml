@@ -10,10 +10,10 @@ inputs:
 runs:
   using: composite
   steps:
-    # Taplo lint
-    - name: Taplo lint
-      if: ${{ inputs.linter == 'taplo' }}
-      run: devenv shell taplo-lint
+    # Lint
+    - name: lint
+      if: ${{ inputs.linter == 'lint' }}
+      run: devenv task run lint
       shell: bash
     # Pre-commit
     - name: Run pre-commit hooks
