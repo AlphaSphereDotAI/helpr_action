@@ -25,24 +25,20 @@ runs:
       with:
         enable-cache: true
         activate-environment: true
-
     - name: Increase the version
       run: uv version --bump ${{ inputs.bump_type }}
       shell: bash
-
     - name: Get Package version from pyproject.toml
       id: get_package_version
       uses: mikefarah/yq@065b200af9851db0d5132f50bc10b1406ea5c0a8 # v4.50.1
       with:
         cmd: yq -roy '.project.version' pyproject.toml
-
     - name: Commit updated version
       if: ${{ inputs.commit_changes == 'true' }}
       uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
       with:
         commit_message: "Tag: ${{ steps.get_package_version.outputs.result }}"
         tagging_message: ${{ steps.get_package_version.outputs.result }}
-
     - name: Create tag manually
       if: ${{ inputs.create_tag == 'true' && inputs.commit_changes == 'false' }}
       run: |
