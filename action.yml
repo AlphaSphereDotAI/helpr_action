@@ -99,15 +99,8 @@ runs:
       uses: mikefarah/yq@065b200af9851db0d5132f50bc10b1406ea5c0a8 # v4.50.1
       with:
         cmd: yq -iroy '.imports = ["./repo"]' devenv.yaml
-    - name: Install Nix
-      uses: cachix/install-nix-action@4e002c8ec80594ecd40e759629461e26c8abed15 # v31.9.0
-    - name: Cache
-      uses: cachix/cachix-action@0fc020193b5a1fa3ac4575aa3a7d3aa6a35435ad # v16
-      with:
-        name: devenv
-    - name: Install devenv.sh
-      run: nix profile install nixpkgs#devenv
-      shell: bash
+    - name: Setup Devenv
+      uses: AlphaSphereDotAI/helpr_action/setup/devenv@v0.0.1
     - run: ls -lah
       shell: bash
     - name: Build Container
