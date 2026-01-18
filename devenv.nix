@@ -92,6 +92,7 @@
     "lint:ls-lint".exec = "${lib.getExe pkgs.ls-lint}";
     "lint:taplo".exec = "${lib.getExe pkgs.taplo} lint --default-schema-catalogs";
     "lint:ty".exec = "${lib.getExe pkgs.ty} check --output-format github";
+    "lint:hadolint".exec = "${lib.getExe pkgs.hadolint} -f sarif ./repo/Dockerfile > hadolint.sarif";
   };
 
   # https://devenv.sh/tests/
