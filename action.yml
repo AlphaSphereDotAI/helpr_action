@@ -1,5 +1,8 @@
 name: Helpr Action
 description: Helpr Action is a GitHub Action that helps AlphaSphere.AI team.
+branding:
+  icon: help-circle
+  color: purple
 inputs:
   build_container:
     required: false
