@@ -15,7 +15,6 @@ runs:
       if: ${{ inputs.linter == 'taplo' }}
       run: devenv shell taplo-lint
       shell: bash
-
     # Pre-commit
     - name: Run pre-commit hooks
       if: ${{ inputs.linter == 'pre-commit' }}
@@ -28,7 +27,6 @@ runs:
       with:
         commit_message: '[pre-commit] Apply format fixes'
         commit_options: --no-verify
-
     # UV Lock Check
     - name: Check if the lockfile is up-to-date
       if: ${{ inputs.linter == 'uv-lock' }}
@@ -42,13 +40,11 @@ runs:
         summary: |
           ## UV Lock Check
           - **Status**: ${{ steps.uv_lock_check.outcome == 'success' && ':white_check_mark:' || ':x:' }}
-
     # ls-lint
     - name: Lint file names
       if: ${{ inputs.linter == 'ls-lint' }}
       run: devenv shell ls-lint-check
       shell: bash
-
     # Ruff check
     - name: Ruff check
       if: ${{ inputs.linter == 'ruff' }}
@@ -59,7 +55,6 @@ runs:
       uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
       with:
         sarif_file: ruff.sarif
-
     # YamlFix
     - name: Format
       if: ${{ inputs.linter == 'yamlfix' }}
@@ -71,13 +66,11 @@ runs:
       with:
         commit_message: '[YamlFix] Apply linters fixes'
         commit_options: --no-verify
-
     # YamlLint
     - name: Check
       if: ${{ inputs.linter == 'yamllint' }}
       run: uvx yamllint . --strict -c=.github/lint/.yamllint.yaml --format github
       shell: bash
-
     # Syft
     - name: SBOM Generation
       uses: anchore/sbom-action@0b82b0b1a22399a1c542d4d656f70cd903571b5c # v0.21.1
@@ -87,7 +80,6 @@ runs:
         dependency-snapshot: true
         output-file: ${{ github.event.repository.name }}-sbom.json
         format: syft-json
-
     # Grype
     - name: Scan current project
       uses: anchore/scan-action@62b74fb7bb810d2c45b1865f47a77655621862a5 # v7.2.3
@@ -101,7 +93,6 @@ runs:
       uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
       with:
         sarif_file: ${{ steps.scan.outputs.sarif }}
-
     # Trivy repo scan
     - name: Run Trivy vulnerability scanner in repo mode
       uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
@@ -120,7 +111,6 @@ runs:
       with:
         sarif_file: trivy-results-repo.sarif
         category: repo
-
     # Trivy config scan
     - name: Run Trivy vulnerability scanner in config mode
       uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
@@ -138,7 +128,6 @@ runs:
       with:
         sarif_file: trivy-results-config.sarif
         category: config
-
     # Trivy filesystem scan
     - name: Run Trivy vulnerability scanner in filesystem mode
       uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
@@ -156,7 +145,6 @@ runs:
       with:
         name: trivy-sbom-report
         path: dependency-results.sbom.json
-
     # DCLint
     - name: Lint Docker Compose file
       uses: docker-compose-linter/dclint-github-action@18659f6a7956706cb67cf9c1ad5e55f4352cbc17 # v1.6.0
@@ -164,13 +152,11 @@ runs:
       with:
         fix: true
         recursive: true
-
     # Ty
     - name: Check
       if: ${{ inputs.linter == 'ty' }}
       run: uvx ty check --output-format github
       shell: bash
-
     # MarkdownLint
     - name: Lint Markdown files
       uses: DavidAnson/markdownlint-cli2-action@07035fd053f7be764496c0f8d8f9f41f98305101 # v22.0.0
@@ -179,7 +165,6 @@ runs:
         globs: '**/*.md'
         config: .github/lint/.markdownlint.yaml
         fix: true
-
     # Hadolint
     - name: Lint Dockerfile
       uses: hadolint/hadolint-action@2332a7b74a6de0dda2e2221d575162eba76ba5e5 # v3.3.0
