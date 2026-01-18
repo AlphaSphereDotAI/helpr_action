@@ -13,11 +13,13 @@ runs:
     # Lint
     - name: lint
       if: ${{ inputs.linter == 'lint' }}
+      working-directory: ${{ github.workspace }}/repo
       run: devenv tasks run lint
       shell: bash
     # Pre-commit
     - name: Run pre-commit hooks
       if: ${{ inputs.linter == 'pre-commit' }}
+      working-directory: ${{ github.workspace }}/repo
       run: devenv test
       shell: bash
     - name: Commit and push applied fixes
