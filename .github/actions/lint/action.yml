@@ -34,17 +34,6 @@ runs:
       uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
       with:
         sarif_file: ruff.sarif
-    # YamlFix
-    - name: Format
-      if: ${{ inputs.linter == 'yamlfix' }}
-      run: uvx yamlfix . --config-file .github/lint/.yamlfix.toml
-      shell: bash
-    - name: Commit and push applied linter fixes
-      uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
-      if: ${{ inputs.linter == 'yamlfix' }}
-      with:
-        commit_message: "[YamlFix] Apply linters fixes"
-        commit_options: --no-verify
     # Syft
     - name: SBOM Generation
       uses: anchore/sbom-action@0b82b0b1a22399a1c542d4d656f70cd903571b5c # v0.21.1
