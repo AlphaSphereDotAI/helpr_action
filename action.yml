@@ -78,6 +78,9 @@ runs:
         token: ${{ inputs.github_token }}
         fetch-depth: 0
         path: ${{ github.workspace }}/repo
+    - name: Remove .git directory from Helpr repo
+      run: rm -rd ${{ github.workspace }}/.git
+      shell: bash
     - name: Check /repo has devenv files
       id: check_devenv_files
       run: |
