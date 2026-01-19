@@ -26,12 +26,6 @@ runs:
       with:
         commit_message: "[pre-commit] Apply format fixes"
         commit_options: --no-verify
-    # Ruff check
-    - name: upload Ruff scan SARIF report
-      if: ${{ hashFiles('ruff.sarif') != '' }}
-      uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
-      with:
-        sarif_file: ruff.sarif
     # Syft
     - name: SBOM Generation
       uses: anchore/sbom-action@0b82b0b1a22399a1c542d4d656f70cd903571b5c # v0.21.1
@@ -49,11 +43,8 @@ runs:
       with:
         path: .
         cache-db: true
-    - name: upload Anchore scan SARIF report
-      if: ${{ (success() || failure()) && inputs.linter == 'grype' }}
-      uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
-      with:
-        sarif_file: ${{ steps.scan.outputs.sarif }}
+        output-format: sarif
+        output-file: ../results/grype-scan.sarif
     # Trivy repo scan
     - name: Run Trivy vulnerability scanner in repo mode
       uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
@@ -62,16 +53,10 @@ runs:
         scan-type: repo
         trivy-config: .github/lint/.trivy.yaml
         format: sarif
-        output: trivy-results-repo.sarif
+        output: ../results/trivy-results-repo.sarif
         github-pat: ${{ inputs.github_token }}
         exit-code: "1"
         scanners: vuln,secret,misconfig,license
-    - name: Upload Trivy repo scan results to GitHub Security tab
-      if: ${{ (success() || failure()) && inputs.linter == 'trivy-repo' }}
-      uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
-      with:
-        sarif_file: trivy-results-repo.sarif
-        category: repo
     # Trivy config scan
     - name: Run Trivy vulnerability scanner in config mode
       uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
@@ -80,15 +65,9 @@ runs:
         scan-type: config
         trivy-config: .github/lint/.trivy.yaml
         format: sarif
-        output: trivy-results-config.sarif
+        output: ../results/trivy-results-config.sarif
         exit-code: "1"
         scanners: vuln,secret,misconfig,license
-    - name: Upload Trivy config scan results to GitHub Security tab
-      if: ${{ (success() || failure()) && inputs.linter == 'trivy-config' }}
-      uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
-      with:
-        sarif_file: trivy-results-config.sarif
-        category: config
     # Trivy filesystem scan
     - name: Run Trivy vulnerability scanner in filesystem mode
       uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
@@ -113,9 +92,9 @@ runs:
       with:
         fix: true
         recursive: true
-    # Hadolint
-    - name: upload Hadolint scan SARIF report
-      if: ${{ hashFiles('hadolint.sarif') != '' }}
+    - name: list all files at ../results
+      run: ls -lah ../results
+      shell: bash
+    - name: Upload Scan SARIF reports
+      if: ${{ always() && ! cancelled() }}
       uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
-      with:
-        sarif_file: hadolint.sarif
