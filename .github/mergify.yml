@@ -9,4 +9,5 @@ queue_rules:
           - check-success = CodeFactor
           - check-success = GitGuardian Security Checks
           - check-success = CodeQL
+          - check-success = Test
     autoqueue: true
