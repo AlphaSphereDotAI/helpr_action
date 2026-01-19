@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }:
 
@@ -79,7 +80,9 @@
   };
 
   # https://devenv.sh/basics/
-  # env.GREET = "devenv";
+  env = {
+    SARIF_DIR = "../results";
+  };
 
   # https://devenv.sh/packages/
   packages = with pkgs; [
@@ -114,12 +117,19 @@
 
   # https://devenv.sh/tasks/
   tasks = {
-    "lint:ruff".exec = "${lib.getExe pkgs.ruff} check --output-format sarif --output-file ruff.sarif";
+    "mkdir:results".exec = "mkdir -p ${config.env.SARIF_DIR}";
+    "lint:ruff" = {
+      exec = "${lib.getExe pkgs.ruff} check --output-format sarif --output-file ${config.env.SARIF_DIR}/ruff.sarif";
+      after = [ "mkdir:results" ];
+    };
     "lint:uv_lock_check".exec = "${lib.getExe pkgs.uv} lock --check";
     "lint:ls-lint".exec = "${lib.getExe pkgs.ls-lint}";
     "lint:taplo".exec = "${lib.getExe pkgs.taplo} lint --default-schema-catalogs";
     "lint:ty".exec = "${lib.getExe pkgs.ty} check --output-format github";
-    "lint:hadolint".exec = "${lib.getExe pkgs.hadolint} -f sarif ./repo/Dockerfile > hadolint.sarif";
+    "lint:hadolint" = {
+      exec = "${lib.getExe pkgs.hadolint} -f sarif ./repo/Dockerfile > ${config.env.SARIF_DIR}/hadolint.sarif";
+      after = [ "mkdir:results" ];
+    };
   };
 
   # https://devenv.sh/tests/
