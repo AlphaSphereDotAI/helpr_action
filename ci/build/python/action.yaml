@@ -27,6 +27,7 @@ runs:
       if: >-
         ${{
 
+
           inputs.update_version == 'true' &&
           (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result
         }}
@@ -44,6 +45,7 @@ runs:
       if: >-
         ${{
 
+
           inputs.update_version == 'true' &&
           (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result
         }}
@@ -55,6 +57,7 @@ runs:
     - name: Update the tag to the updated version
       if: >-
         ${{
+
 
           inputs.update_version == 'true' &&
           (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result

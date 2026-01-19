@@ -66,6 +66,7 @@ runs:
         password: >-
           ${{
 
+
             inputs.registry == 'ghcr.io' && inputs.github_token ||
             inputs.registry == 'docker.io' && inputs.docker_token
           }}
@@ -103,6 +104,7 @@ runs:
       with:
         subject-name: >-
           ${{
+
 
             inputs.registry == 'docker.io' && 'index.docker.io' || inputs.registry
           }}/${{github.repository}}
