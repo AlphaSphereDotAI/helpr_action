@@ -1,0 +1,33 @@
+name: Dependency Compatibility Check
+description: Run dependency compatibility check for the Python project
+outputs:
+  dependency_check_status:
+    description: Status of dependency compatibility check
+    value: ${{ steps.dependency_check.outcome }}
+runs:
+  using: composite
+  steps:
+    - name: Install the project
+      id: dependency_check
+      run: uv sync --frozen --no-install-project
+      shell: bash
+    - name: Job Summary
+      if: success() || failure()
+      run: |
+        STATUS="${{ steps.dependency_check.outcome == 'success' && ':white_check_mark:' || ':x:' }}"
+        echo "## Dependency Compatibility Check" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status**: $STATUS" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+      shell: bash
+    - name: Show Dependency Tree
+      if: steps.dependency_check.outcome == 'success'
+      run: |
+        echo "## Dependency Tree" >> $GITHUB_STEP_SUMMARY
+        echo "<details>" >> $GITHUB_STEP_SUMMARY
+        echo "<summary> Dependency Tree </summary>" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        echo "$(uv tree --show-sizes)" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        echo "</details>" >> $GITHUB_STEP_SUMMARY
+      shell: bash
