@@ -1,4 +1,4 @@
-name: Build
+name: Build Python Package
 description: Build Python package and upload artifacts
 inputs:
   update_version:
@@ -15,22 +15,14 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Get Package version from pyproject.toml
+    - name: Get Package version
       id: get_package_version
-      uses: mikefarah/yq@065b200af9851db0d5132f50bc10b1406ea5c0a8 # v4.50.1
-      with:
-        cmd: yq -roy '.project.version' pyproject.toml
-    - name: Install the project
-      run: uv sync --no-dev --frozen --no-editable
+      if: ${{ inputs.update_version == 'true' }}
+      run: echo "result=$(uv version --short)" >> $GITHUB_OUTPUT
       shell: bash
     - name: Update Project Version
       if: >-
-        ${{
-
-
-          inputs.update_version == 'true' &&
-          (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result
-        }}
+        ${{ (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result }}
       run: uv version ${{ inputs.target_version || github.ref_name }}
       shell: bash
     - name: Build source and wheel distribution
@@ -43,12 +35,7 @@ runs:
         path: dist/
     - name: Update the main branch to the updated version
       if: >-
-        ${{
-
-
-          inputs.update_version == 'true' &&
-          (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result
-        }}
+        ${{ (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result }}
       uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
       with:
         commit_message: 'Version: ${{ inputs.target_version || github.ref_name }}'
@@ -56,12 +43,7 @@ runs:
         commit_options: --no-verify
     - name: Update the tag to the updated version
       if: >-
-        ${{
-
-
-          inputs.update_version == 'true' &&
-          (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result
-        }}
+        ${{ (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result }}
       run: |
         git tag --force ${{ inputs.target_version || github.ref_name }}
         git push origin --force HEAD:refs/tags/${{ inputs.target_version || github.ref_name }}
