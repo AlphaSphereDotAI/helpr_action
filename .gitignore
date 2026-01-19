@@ -13,3 +13,4 @@ devenv.local.yaml
 .ruff.toml
 .vscode/settings.json
 .yamlfmt.yaml
+.ls-lint.yml
