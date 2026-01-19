@@ -63,6 +63,19 @@
         skip-magic-trailing-comma = false;
       };
     };
+    ".ls-lint.yml".yaml = {
+      ls = {
+        ".py" = "snake_case";
+        ".yaml" = "snake_case | kebab-case";
+        ".yml" = "snake_case | kebab-case";
+        ".toml" = "snake_case";
+        ".md" = "SCREAMING_SNAKE_CASE";
+      };
+      ignore = [
+        ".devenv"
+        ".git"
+      ];
+    };
   };
 
   # https://devenv.sh/basics/
