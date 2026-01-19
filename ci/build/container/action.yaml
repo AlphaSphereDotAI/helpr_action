@@ -64,8 +64,7 @@ runs:
         registry: ${{ inputs.registry }}
         username: mh0386
         password: >-
-          ${{ inputs.registry == 'ghcr.io' && inputs.github_token ||
-          inputs.registry == 'docker.io' && inputs.docker_token }}
+          ${{ inputs.registry == 'ghcr.io' && inputs.github_token || inputs.registry == 'docker.io' && inputs.docker_token }}
     - name: Set up QEMU
       uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
     - name: Set up Docker Buildx
@@ -133,8 +132,7 @@ runs:
     - name: Docker Secret Scanning
       shell: bash
       run: >-
-        trufflehog docker --image ${{steps.tag.outputs.TAG}} --fail --github-actions --results=verified
-        --log-level=4 --no-update
+        trufflehog docker --image ${{steps.tag.outputs.TAG}} --fail --github-actions --results=verified --log-level=4 --no-update
     # syft
     - name: SBOM Generation
       uses: anchore/sbom-action@0b82b0b1a22399a1c542d4d656f70cd903571b5c # v0.21.1
