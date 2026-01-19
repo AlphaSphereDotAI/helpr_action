@@ -26,7 +26,8 @@ jobs:
         with:
           egress-policy: audit
       - run: |
-          echo '${{ toJson(github.event) }}'
+          echo "${{ toJson(github.event) }}" > github_event.json
+          cat github_event.json
       - name: Checkout repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
@@ -52,8 +53,8 @@ jobs:
       issues: write
     if: >-
       ${{ github.event.head_commit.author.name == 'mergify[bot]' &&
-          !contains(github.event.head_commit.message, 'alphaspheredotai/helpr_action') &&
-          contains(github.event.head_commit.message, 'chore(deps): update') &&
+          ! contains(github.event.base_ref, 'alphaspheredotai/helpr_action') &&
+          contains(github.event.base_ref, 'renovate') &&
           github.event_name == 'push' &&
           github.ref_type == 'branch' }}
     steps:
