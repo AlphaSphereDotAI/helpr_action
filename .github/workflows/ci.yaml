@@ -50,7 +50,8 @@ jobs:
       issues: write
     if: >-
       ${{ github.actor == 'mergify[bot]' &&
-          contains(github.event.head_commit.message, 'chore(deps): update alphaspheredotai/helpr_action') &&
+          !contains(github.event.head_commit.message, 'alphaspheredotai/helpr_action') &&
+          contains(github.event.head_commit.message, 'chore(deps): update') &&
           github.event_name == 'push' &&
           github.ref_type == 'branch' }}
     steps:
