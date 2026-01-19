@@ -64,12 +64,8 @@ runs:
         registry: ${{ inputs.registry }}
         username: mh0386
         password: >-
-          ${{
-
-
-            inputs.registry == 'ghcr.io' && inputs.github_token ||
-            inputs.registry == 'docker.io' && inputs.docker_token
-          }}
+          ${{ inputs.registry == 'ghcr.io' && inputs.github_token ||
+          inputs.registry == 'docker.io' && inputs.docker_token }}
     - name: Set up QEMU
       uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
     - name: Set up Docker Buildx
@@ -97,17 +93,13 @@ runs:
           INSTALL_SOURCE=${{ inputs.install_source }}
           PYTHON_VERSION=${{ steps.get_python_version.outputs.result }}
       env:
-        DOCKER_CONTENT_TRUST: "1"
+        DOCKER_CONTENT_TRUST: '1'
     - name: Generate artifact attestation
       uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
       if: ${{ inputs.is_test == false }}
       with:
         subject-name: >-
-          ${{
-
-
-            inputs.registry == 'docker.io' && 'index.docker.io' || inputs.registry
-          }}/${{github.repository}}
+          ${{inputs.registry == 'docker.io' && 'index.docker.io' || inputs.registry}}/${{github.repository}}
         subject-digest: ${{ steps.push.outputs.digest }}
         push-to-registry: true
     - name: Update Docker Hub Description
@@ -141,7 +133,8 @@ runs:
     - name: Docker Secret Scanning
       shell: bash
       run: >-
-        trufflehog docker --image ${{steps.tag.outputs.TAG}} --fail --github-actions --results=verified --log-level=4 --no-update
+        trufflehog docker --image ${{steps.tag.outputs.TAG}} --fail --github-actions --results=verified
+        --log-level=4 --no-update
     # syft
     - name: SBOM Generation
       uses: anchore/sbom-action@0b82b0b1a22399a1c542d4d656f70cd903571b5c # v0.21.1
@@ -170,7 +163,7 @@ runs:
         trivy-config: .github/lint/.trivy.yaml
         format: sarif
         output: trivy-results-image.sarif
-        exit-code: "1"
+        exit-code: '1'
         scanners: vuln,secret,misconfig,license
     - name: Upload Trivy scan results to GitHub Security tab
       if: success() || failure()
