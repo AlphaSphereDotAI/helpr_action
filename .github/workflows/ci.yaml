@@ -65,11 +65,9 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
       - name: Setup Devenv
         uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@29475c7a807f8915f41785451d54f2e8b5c8f968 # v0.0.1
-      - name: Enter devenv shell
-        run: devenv shell
       - name: Bump git version
         id: get_git_version
-        run: echo "result=$(semver patch)" >> "$GITHUB_OUTPUT"
+        run: echo "result=$(devenv shell -q semver patch)" >> "$GITHUB_OUTPUT"
       - name: Tag
         id: tag
         uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
