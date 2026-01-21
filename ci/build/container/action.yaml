@@ -135,7 +135,7 @@ runs:
         trufflehog docker --image ${{steps.tag.outputs.TAG}} --fail --github-actions --results=verified --log-level=4 --no-update
     # syft
     - name: SBOM Generation
-      uses: anchore/sbom-action@0b82b0b1a22399a1c542d4d656f70cd903571b5c # v0.21.1
+      uses: anchore/sbom-action@62ad5284b8ced813296287a0b63906cb364b73ee # v0.22.0
       with:
         image: ${{ steps.tag.outputs.TAG }}
         dependency-snapshot: true
