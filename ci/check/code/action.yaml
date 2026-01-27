@@ -1,5 +1,5 @@
 name: Lint
-description: Run comprehensive linting and code quality checks
+description: Checks for source code quality and vulnerabilities
 inputs:
   linter:
     description: Linter to use
