@@ -130,8 +130,7 @@ runs:
     - name: Docker Secret Scanning
       shell: bash
       run: >-
-        devenv shell trufflehog docker --image ${{steps.tag.outputs.TAG}}
-        --fail --github-actions --results=verified --log-level=4 --no-update
+        devenv shell trufflehog docker --image ${{steps.tag.outputs.TAG}} --fail --github-actions --results=verified --log-level=4 --no-update
     # syft
     - name: SBOM Generation
       uses: anchore/sbom-action@62ad5284b8ced813296287a0b63906cb364b73ee # v0.22.0
