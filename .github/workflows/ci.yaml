@@ -32,7 +32,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
       - name: Setup Devenv
-        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@29475c7a807f8915f41785451d54f2e8b5c8f968 # v0.0.1
+        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@64768d462419876feb14c48b21bb973579274d94 # v0.0.3
       - name: Test
         run: devenv test
       - name: Commit pre-commit fixes
@@ -69,7 +69,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0
       - name: Setup Devenv
-        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@29475c7a807f8915f41785451d54f2e8b5c8f968 # v0.0.1
+        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@64768d462419876feb14c48b21bb973579274d94 # v0.0.3
       - name: Bump git version
         id: get_git_version
         run: echo "result=$(devenv shell -q semver patch)" >> "$GITHUB_OUTPUT"
@@ -79,9 +79,9 @@ jobs:
         with:
           commit_message: 'Tag: ${{ steps.get_git_version.outputs.result }}'
           tagging_message: ${{ steps.get_git_version.outputs.result }}
+          create_git_tag_only: true
   release:
     name: Release
-    needs: tag
     runs-on: ubuntu-latest
     environment: release
     permissions:
