@@ -91,6 +91,7 @@
     trufflehog
     yq-go
     semver
+    uv
   ];
 
   # https://devenv.sh/languages/
