@@ -79,6 +79,7 @@ jobs:
         with:
           commit_message: 'Tag: ${{ steps.get_git_version.outputs.result }}'
           tagging_message: ${{ steps.get_git_version.outputs.result }}
+          create_git_tag_only: true
   release:
     name: Release
     needs: tag
