@@ -82,7 +82,6 @@ jobs:
           create_git_tag_only: true
   release:
     name: Release
-    needs: tag
     runs-on: ubuntu-latest
     environment: release
     permissions:
