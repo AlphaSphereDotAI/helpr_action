@@ -28,12 +28,6 @@ runs:
       with:
         model: ${{ inputs.opencode_model }}
     # UV Lock Sync
-    - name: Install uv
-      if: ${{ inputs.uv_lock_sync_enabled == 'true' }}
-      uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
-      with:
-        enable-cache: true
-        activate-environment: true
     - name: Sync dependencies and uv.lock
       if: ${{ inputs.uv_lock_sync_enabled == 'true' }}
       run: uv lock
