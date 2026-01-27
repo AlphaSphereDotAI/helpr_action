@@ -13,7 +13,7 @@
         document-start = "disable";
         truthy = "disable";
         comments = "disable";
-        line-length.max = 130;
+        line-length.max = 140;
       };
     };
     ".yamlfmt.yaml".yaml = {
