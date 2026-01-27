@@ -147,11 +147,8 @@ runs:
       with:
         image: ${{ steps.tag.outputs.TAG }}
         cache-db: true
-    - name: upload Anchore scan SARIF report
-      if: success() || failure()
-      uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
-      with:
-        sarif_file: ${{ steps.scan.outputs.sarif }}
+        output-format: sarif
+        output-file: ../results/grype-scan.sarif
     # trivy
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
@@ -159,26 +156,19 @@ runs:
         image-ref: ${{ steps.tag.outputs.TAG }}
         trivy-config: .github/lint/.trivy.yaml
         format: sarif
-        output: trivy-results-image.sarif
+        output: ../results/trivy-results-image.sarif
         exit-code: '1'
         scanners: vuln,secret,misconfig,license
-    - name: Upload Trivy scan results to GitHub Security tab
-      if: success() || failure()
-      uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
-      with:
-        sarif_file: trivy-results-image.sarif
     # dockle
     - name: Lint the Container Image
       uses: goodwithtech/dockle-action@e30e6af832aad6ea7dca2a248d31a85eab6dbd68 # v0.4.15
       with:
         image: ${{ steps.tag.outputs.TAG }}
         format: sarif
-        output: dockle.sarif
+        output: ../results/dockle.sarif
         accept-file: settings.py
         accept-key: --chmod,--chown,GRADIO_SERVER_PORT,GRADIO_SERVER_NAME,FASTEMBED_CACHE_PATH,PATH
         ignore: CIS-DI-0006
-    - name: upload Dockle scan SARIF report
-      if: success() || failure()
+    - name: Upload Scan SARIF reports
+      if: ${{ always() && ! cancelled() }}
       uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
-      with:
-        sarif_file: dockle.sarif
