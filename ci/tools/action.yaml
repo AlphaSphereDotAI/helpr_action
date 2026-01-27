@@ -24,7 +24,7 @@ runs:
       if: ${{ inputs.opencode_enabled == 'true' }}
       uses: sst/opencode/github@056186225b6648cd5244d2cb0b05622b95343dc6 # v1.1.36
       env:
-        OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+        OPENCODE_API_KEY: ${{ inputs.opencode_api_key }}
       with:
         model: ${{ inputs.opencode_model }}
     # UV Lock Sync
