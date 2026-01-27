@@ -1,0 +1,67 @@
+name: Lint
+description: Checks for Docker image vulnerabilities and best practices
+inputs:
+  image_tag:
+    description: The built image tag
+    required: true
+  github_token:
+    description: GitHub Token
+    required: false
+runs:
+  using: composite
+  steps:
+    # docker_scout
+    - name: Docker Scout
+      uses: docker/scout-action@f8c776824083494ab0d56b8105ba2ca85c86e4de # v1.18.2
+      with:
+        command: cves
+        dockerhub-user: mh0386
+        dockerhub-password: ${{ inputs.docker_token }}
+        image: ${{ inputs.image_tag }}
+        github-token: ${{ inputs.github_token }}
+    # trufflehog
+    - name: Docker Secret Scanning
+      shell: bash
+      run: >-
+        devenv shell trufflehog docker --image ${{inputs.image_tag}} --fail --github-actions --results=verified
+        --log-level=4 --no-update
+    # syft
+    - name: SBOM Generation
+      uses: anchore/sbom-action@62ad5284b8ced813296287a0b63906cb364b73ee # v0.22.0
+      with:
+        image: ${{ inputs.image_tag }}
+        dependency-snapshot: true
+        output-file: ${{ github.event.repository.name }}-sbom.json
+        format: syft-json
+    # grype
+    - name: Scan image
+      uses: anchore/scan-action@0d444ed77d83ee2ba7f5ced0d90d640a1281d762 # v7.3.0
+      id: scan
+      with:
+        image: ${{ inputs.image_tag }}
+        cache-db: true
+        output-format: sarif
+        output-file: ../results/grype-scan.sarif
+    # trivy
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
+      with:
+        image-ref: ${{ inputs.image_tag }}
+        trivy-config: .github/lint/.trivy.yaml
+        format: sarif
+        output: ../results/trivy-results-image.sarif
+        exit-code: '1'
+        scanners: vuln,secret,misconfig,license
+    # dockle
+    - name: Lint the Container Image
+      uses: goodwithtech/dockle-action@e30e6af832aad6ea7dca2a248d31a85eab6dbd68 # v0.4.15
+      with:
+        image: ${{ inputs.image_tag }}
+        format: sarif
+        output: ../results/dockle.sarif
+        accept-file: settings.py
+        accept-key: --chmod,--chown,GRADIO_SERVER_PORT,GRADIO_SERVER_NAME,FASTEMBED_CACHE_PATH,PATH
+        ignore: CIS-DI-0006
+    - name: Upload Scan SARIF reports
+      if: ${{ always() && ! cancelled() }}
+      uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
