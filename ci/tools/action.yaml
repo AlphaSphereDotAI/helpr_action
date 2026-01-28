@@ -22,7 +22,7 @@ runs:
     # Opencode
     - name: Run opencode
       if: ${{ inputs.opencode_enabled == 'true' }}
-      uses: sst/opencode/github@056186225b6648cd5244d2cb0b05622b95343dc6 # v1.1.36
+      uses: sst/opencode/github@e3be4c9f23a157c437aae56f6841db1c7ec723de # v1.1.37
       env:
         OPENCODE_API_KEY: ${{ inputs.opencode_api_key }}
       with:
