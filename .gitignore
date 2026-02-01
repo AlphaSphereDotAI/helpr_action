@@ -1,14 +1,8 @@
-# Devenv
-.devenv*
-devenv.local.nix
-devenv.local.yaml
-
-# direnv
-.direnv
-
-# pre-commit
+**/.devenv*
+**/devenv.local.nix
+**/devenv.local.yaml
+**/.direnv
 .pre-commit-config.yaml
-
 .yamllint.yaml
 .ruff.toml
 .vscode/settings.json
