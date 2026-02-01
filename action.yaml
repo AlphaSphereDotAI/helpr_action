@@ -122,18 +122,18 @@ runs:
         uv_lock_sync_enabled: ${{ inputs.uv_lock_sync_enabled }}
         opencode_model: ${{ inputs.opencode_model }}
         opencode_api_key: ${{ inputs.opencode_api_key }}
-    - name: Lint Code
-      uses: AlphaSphereDotAI/helpr_action/ci/lint@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
-      if: ${{ inputs.lint == 'true' }}
-      with:
-        linter: ${{ inputs.linter }}
-        github_token: ${{ inputs.github_token }}
     - name: Release Mode
       uses: AlphaSphereDotAI/helpr_action/ci/release@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
       if: ${{ inputs.release == 'true' }}
     - name: Test Mode
       uses: AlphaSphereDotAI/helpr_action/ci/test@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
       if: ${{ inputs.test == 'true' }}
+      with:
+        linter: ${{ inputs.linter }}
+        github_token: ${{ inputs.github_token }}
+        test_code: true
+        test_container: true
+        image_tag: ${{ inputs.image_tag }}
     - name: Bump Version
       uses: AlphaSphereDotAI/helpr_action/ci/version@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
       if: ${{ inputs.version == 'true' }}

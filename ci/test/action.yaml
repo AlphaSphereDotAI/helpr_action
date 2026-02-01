@@ -1,0 +1,34 @@
+name: Test
+description: Test the project codebase
+inputs:
+  test_code:
+    description: Test Code
+    required: true
+  test_container:
+    description: Test Container
+    required: true
+  image_tag:
+    description: Image Tag
+    required: false
+  github_token:
+    description: GitHub Token
+    required: false
+    default: ${{ github.token }}
+  linter:
+    description: Linter to use
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: Test code
+      uses: AlphaSphereDotAI/helpr_action/ci/test/code@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
+      if: ${{ inputs.test_code == 'true' }}
+      with:
+        linter: ${{ inputs.linter }}
+        github_token: ${{ inputs.github_token }}
+    - name: Test Container Image
+      uses: AlphaSphereDotAI/helpr_action/ci/test/container@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
+      if: ${{ inputs.test_container == 'true' }}
+      with:
+        image_tag: ${{ inputs.image_tag }}
+        github_token: ${{ inputs.github_token }}
