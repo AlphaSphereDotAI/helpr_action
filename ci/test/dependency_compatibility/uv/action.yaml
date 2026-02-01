@@ -1,4 +1,4 @@
-name: Dependency Compatibility Check
+name: UV Dependency Compatibility Check
 description: Run dependency compatibility check for the Python project
 outputs:
   dependency_check_status:
