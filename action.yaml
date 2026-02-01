@@ -60,6 +60,12 @@ inputs:
   linter:
     description: Linter to use
     required: false
+  test_dependency_compatibility:
+    description: Test Dependency Compatibility
+    required: true
+  dependency_compatibility_tool:
+    description: Tool to use for dependency compatibility check
+    required: true
 runs:
   using: composite
   steps:
@@ -134,6 +140,8 @@ runs:
         test_code: true
         test_container: true
         image_tag: ${{ inputs.image_tag }}
+        dependency_compatibility_tool: ${{ inputs.dependency_compatibility_tool }}
+        test_dependency_compatibility: ${{ inputs.test_dependency_compatibility }}
     - name: Bump Version
       uses: AlphaSphereDotAI/helpr_action/ci/version@ee1218d7f74573d1f44b507695ba21a7b547c0e0 # v0.0.16
       if: ${{ inputs.version == 'true' }}
