@@ -9,7 +9,7 @@ runs:
   steps:
     - name: Install the project
       id: dependency_check
-      run: uv sync --frozen --no-install-project
+      run: devenv shell -q uv sync --frozen --no-install-project
       shell: bash
     - name: Job Summary
       if: success() || failure()
