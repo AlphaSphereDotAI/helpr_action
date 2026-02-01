@@ -156,8 +156,6 @@ runs:
         test_code: true
         test_container: true
         image_tag: ${{ inputs.image_tag }}
-        dependency_compatibility_tool: ${{ inputs.dependency_compatibility_tool }}
-        test_dependency_compatibility: ${{ inputs.test_dependency_compatibility }}
     - name: Bump Version
       uses: AlphaSphereDotAI/helpr_action/ci/version@test
       if: ${{ inputs.version == 'true' }}
