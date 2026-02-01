@@ -96,7 +96,7 @@ runs:
       shell: bash
     - name: Update devenv imports
       if: ${{ steps.check_devenv_files.outcome == 'success' }}
-      uses: mikefarah/yq@3d918acc2aa75876ca662e50a98391ab1bce34d0 # v4.52.1
+      uses: mikefarah/yq@2be0094729a1006f61e8339ce9934bfb3cbb549f # v4.52.2
       with:
         cmd: yq -iroy '.imports = ["./repo"]' devenv.yaml
     - name: Setup Devenv
