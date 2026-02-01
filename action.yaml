@@ -120,6 +120,7 @@ runs:
         opencode_enabled: ${{ inputs.opencode_enabled }}
         uv_lock_sync_enabled: ${{ inputs.uv_lock_sync_enabled }}
         opencode_model: ${{ inputs.opencode_model }}
+        opencode_api_key: ${{ inputs.opencode_api_key }}
     - name: Lint Code
       uses: AlphaSphereDotAI/helpr_action/ci/lint@35353f5704021848dae8cf80603eeb1d6cd09e94 # v0.0.16
       if: ${{ inputs.lint == 'true' }}
