@@ -96,6 +96,7 @@ runs:
       shell: bash
     - name: Check /repo has devenv files
       id: check_devenv_files
+      continue-on-error: true
       run: |
         if [ ! -f "./repo/devenv.yaml" ]; then
           echo "devenv.yaml not found in the repository root."
