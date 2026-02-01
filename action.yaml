@@ -62,6 +62,13 @@ inputs:
   dependency_compatibility_tool:
     description: Tool to use for dependency compatibility check
     required: true
+  tag_name:
+    description: Tag name to release
+    required: true
+  packages_dir:
+    description: Directory containing packages to publish
+    required: false
+    default: 'dist/'
 runs:
   using: composite
   steps:
@@ -127,6 +134,10 @@ runs:
     - name: Release Mode
       uses: AlphaSphereDotAI/helpr_action/ci/release@406d2689f26da731dd51c56cb330ff1e02fcdff0 # v0.0.16
       if: ${{ inputs.release == 'true' }}
+      with:
+        tag_name: ${{ github.tag_name }}
+        packages_dir: ${{ inputs.packages_dir }}
+        registry: ${{ inputs.registry }}
     - name: Test Mode
       uses: AlphaSphereDotAI/helpr_action/ci/test@406d2689f26da731dd51c56cb330ff1e02fcdff0 # v0.0.16
       if: ${{ inputs.is_test == 'true' }}
