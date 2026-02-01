@@ -7,6 +7,12 @@ inputs:
   test_container:
     description: Test Container
     required: true
+  test_dependency_compatibility:
+    description: Test Dependency Compatibility
+    required: true
+  dependency_compatibility_tool:
+    description: Tool to use for dependency compatibility check
+    required: true
   image_tag:
     description: Image Tag
     required: false
@@ -20,6 +26,11 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Test Dependency Compatibility
+      uses: AlphaSphereDotAI/helpr_action/ci/test/dependency_compatibility@v0.0.16
+      if: ${{ inputs.test_dependency_compatibility == 'true' }}
+      with:
+        tool: ${{ inputs.dependency_compatibility_tool }}
     - name: Test code
       uses: AlphaSphereDotAI/helpr_action/ci/test/code@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
       if: ${{ inputs.test_code == 'true' }}
