@@ -1,0 +1,19 @@
+name: OpenCode Tool
+description: Run OpenCode to assist with code generation and improvements
+inputs:
+  opencode_model:
+    description: Opencode model to use
+    required: false
+    default: 'opencode/grok-code'
+  opencode_api_key:
+    description: Opencode API key
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Run opencode
+      uses: sst/opencode/github@056186225b6648cd5244d2cb0b05622b95343dc6 # v1.1.36
+      env:
+        OPENCODE_API_KEY: ${{ inputs.opencode_api_key }}
+      with:
+        model: ${{ inputs.opencode_model }}

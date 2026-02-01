@@ -1,0 +1,15 @@
+name: UV Lock Tool
+description: Run UV Lock to sync dependencies in uv.lock
+runs:
+  using: composite
+  steps:
+    - name: Sync dependencies in uv.lock
+      id: uv_lock
+      run: uv lock
+      shell: bash
+    - name: Commit and push changes
+      if: ${{ steps.uv_lock.outcome == 'success' }}
+      uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
+      with:
+        commit_message: Sync `uv.lock`
+        commit_options: --no-verify

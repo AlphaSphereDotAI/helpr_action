@@ -4,38 +4,29 @@ inputs:
   opencode_enabled:
     description: Enable opencode tool
     required: false
-    default: "false"
+    default: 'false'
   opencode_model:
     description: Opencode model to use
     required: false
-    default: "opencode/grok-code"
+    default: 'opencode/grok-code'
   opencode_api_key:
     description: Opencode API key
     required: true
   uv_lock_sync_enabled:
     description: Enable uv lock sync
     required: false
-    default: "false"
+    default: 'false'
 runs:
   using: composite
   steps:
     # Opencode
     - name: Run opencode
+      uses: AlphaSphereDotAI/helpr_action/ci/tools/opencode@7fb514aeba3503ae945ec56ab72c7cddc812fc0d # v0.0.5
       if: ${{ inputs.opencode_enabled == 'true' }}
-      uses: sst/opencode/github@056186225b6648cd5244d2cb0b05622b95343dc6 # v1.1.36
-      env:
-        OPENCODE_API_KEY: ${{ inputs.opencode_api_key }}
       with:
-        model: ${{ inputs.opencode_model }}
+        opencode_model: ${{ inputs.opencode_model }}
+        opencode_api_key: ${{ inputs.opencode_api_key }}
     # UV Lock Sync
-    - name: Sync dependencies and uv.lock
-      id: uv_lock
+    - name: Sync dependencies in uv.lock
+      uses: AlphaSphereDotAI/helpr_action/ci/tools/uv_lock@7fb514aeba3503ae945ec56ab72c7cddc812fc0d # v0.0.5
       if: ${{ inputs.uv_lock_sync_enabled == 'true' }}
-      run: uv lock
-      shell: bash
-    - name: Commit and push changes
-      if: ${{ steps.uv_lock.outcome == 'success' }}
-      uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
-      with:
-        commit_message: Sync uv.lock
-        commit_options: --no-verify
