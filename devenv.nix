@@ -92,6 +92,7 @@
     yq-go
     semver
     uv
+    commitizen
   ];
 
   # https://devenv.sh/languages/
