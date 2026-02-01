@@ -100,38 +100,38 @@ runs:
       with:
         cmd: yq -iroy '.imports = ["./repo"]' devenv.yaml
     - name: Setup Devenv
-      uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@52e1fb5290e443057c79346cd72f2a0fa3f8fadc # v0.0.15
+      uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
     - run: ls -lah
       shell: bash
     - name: Build Container
-      uses: AlphaSphereDotAI/helpr_action/ci/build/container@52e1fb5290e443057c79346cd72f2a0fa3f8fadc # v0.0.15
+      uses: AlphaSphereDotAI/helpr_action/ci/build/container@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
       if: ${{ inputs.build_container == 'true' }}
       with:
         is_test: ${{ inputs.is_test }}
         registry: ${{ inputs.registry }}
         install_source: ${{ inputs.install_source }}
     - name: Build Python Package
-      uses: AlphaSphereDotAI/helpr_action/ci/build/python@52e1fb5290e443057c79346cd72f2a0fa3f8fadc # v0.0.15
+      uses: AlphaSphereDotAI/helpr_action/ci/build/python@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
       if: ${{ inputs.build_python == 'true' }}
     - name: CI Tools
-      uses: AlphaSphereDotAI/helpr_action/ci/tools@52e1fb5290e443057c79346cd72f2a0fa3f8fadc # v0.0.15
+      uses: AlphaSphereDotAI/helpr_action/ci/tools@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
       if: ${{ inputs.ci_tools == 'true' }}
       with:
         opencode_enabled: ${{ inputs.opencode_enabled }}
         uv_lock_sync_enabled: ${{ inputs.uv_lock_sync_enabled }}
         opencode_model: ${{ inputs.opencode_model }}
     - name: Lint Code
-      uses: AlphaSphereDotAI/helpr_action/ci/lint@52e1fb5290e443057c79346cd72f2a0fa3f8fadc # v0.0.15
+      uses: AlphaSphereDotAI/helpr_action/ci/lint@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
       if: ${{ inputs.lint == 'true' }}
       with:
         linter: ${{ inputs.linter }}
         github_token: ${{ inputs.github_token }}
     - name: Release Mode
-      uses: AlphaSphereDotAI/helpr_action/ci/release@52e1fb5290e443057c79346cd72f2a0fa3f8fadc # v0.0.15
+      uses: AlphaSphereDotAI/helpr_action/ci/release@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
       if: ${{ inputs.release == 'true' }}
     - name: Test Mode
-      uses: AlphaSphereDotAI/helpr_action/ci/test@52e1fb5290e443057c79346cd72f2a0fa3f8fadc # v0.0.15
+      uses: AlphaSphereDotAI/helpr_action/ci/test@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
       if: ${{ inputs.test == 'true' }}
     - name: Bump Version
-      uses: AlphaSphereDotAI/helpr_action/ci/version@52e1fb5290e443057c79346cd72f2a0fa3f8fadc # v0.0.15
+      uses: AlphaSphereDotAI/helpr_action/ci/version@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
       if: ${{ inputs.version == 'true' }}
