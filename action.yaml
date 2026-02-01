@@ -44,6 +44,7 @@ inputs:
   github_token:
     required: false
     description: GitHub Token
+    default: ${{ github.token }}
   opencode_enabled:
     description: Enable opencode tool
     required: false
