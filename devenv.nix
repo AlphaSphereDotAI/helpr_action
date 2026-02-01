@@ -176,6 +176,7 @@
     uv-lock.enable = true;
     yamllint.enable = true;
     hadolint.enable = true;
+    flynt.enable = true;
   };
 
   treefmt = {
