@@ -1,0 +1,22 @@
+name: Release
+description: Publish Release
+inputs:
+  tag_name:
+    description: Tag name to release
+    required: true
+  packages_dir:
+    description: Directory containing packages to publish
+    required: false
+    default: 'dist/'
+  registry:
+    description: Registry to publish to
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Publish release distributions to PyPI
+      uses: AlphaSphereDotAI/helpr_action/ci/release/pypi@v0.0.16
+      if: ${{ inputs.registry == 'pypi' }}
+      with:
+        tag_name: ${{ inputs.tag_name }}
+        packages_dir: ${{ inputs.packages_dir }}
