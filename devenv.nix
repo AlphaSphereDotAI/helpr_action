@@ -132,7 +132,7 @@
       exec = "${lib.getExe pkgs.hadolint} -f sarif ./repo/Dockerfile > ${config.env.SARIF_DIR}/hadolint.sarif";
       after = [ "mkdir:results" ];
     };
-    "dependency_check:uv".exec = "${lib.getExe pkgs.uv} sync --frozen --no-install-project";
+    "lint:dependency_uv".exec = "${lib.getExe pkgs.uv} sync --frozen --no-install-project";
   };
 
   # https://devenv.sh/tests/
