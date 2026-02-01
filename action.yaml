@@ -24,10 +24,6 @@ inputs:
     required: false
     description: Release Mode
     default: 'false'
-  test:
-    required: false
-    description: Test Code
-    default: 'false'
   version:
     required: false
     description: Bump Version
@@ -133,7 +129,7 @@ runs:
       if: ${{ inputs.release == 'true' }}
     - name: Test Mode
       uses: AlphaSphereDotAI/helpr_action/ci/test@ee1218d7f74573d1f44b507695ba21a7b547c0e0 # v0.0.16
-      if: ${{ inputs.test == 'true' }}
+      if: ${{ inputs.is_test == 'true' }}
       with:
         linter: ${{ inputs.linter }}
         github_token: ${{ inputs.github_token }}
