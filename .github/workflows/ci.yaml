@@ -112,5 +112,5 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
         with:
-          generate_release_notes: true
+          generate_release_notes: ${{ contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action') }}
           make_latest: true
