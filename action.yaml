@@ -117,6 +117,8 @@ runs:
       uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@test
     - run: ls -lah
       shell: bash
+    - run: devenv info
+      shell: bash
     - name: Build Container
       uses: AlphaSphereDotAI/helpr_action/ci/build/container@test
       if: ${{ inputs.build_container == 'true' }}
