@@ -118,6 +118,8 @@ runs:
       uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@test
     - run: ls -lah
       shell: bash
+    - run: cat .gitignore
+      shell: bash
     - run: devenv info
       shell: bash
     - name: Build Container
