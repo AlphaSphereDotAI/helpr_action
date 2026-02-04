@@ -1,8 +1,8 @@
 """
-A generated module for HelprAction functions
+A generated module for HelprAction functions.
 
 This module has been generated via dagger init and serves as a reference to
-basic module structure as you get started with Dagger.
+ the basic module structure as you get started with Dagger.
 
 Two functions have been pre-created. You can modify, delete, or add to them,
 as needed. They demonstrate usage of arguments and return types using simple
