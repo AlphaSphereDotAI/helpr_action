@@ -1,0 +1,8 @@
+{
+  "name": "helpr_action",
+  "engineVersion": "v0.19.10",
+  "sdk": {
+    "source": "python"
+  },
+  "source": ".dagger"
+}
