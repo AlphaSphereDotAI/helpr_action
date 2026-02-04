@@ -21,12 +21,12 @@ runs:
   steps:
     # Opencode
     - name: Run opencode
-      uses: AlphaSphereDotAI/helpr_action/ci/tools/opencode@569dece1c0b188e290617d6800f86b1ae3cf8c32 # v0.0.18
+      uses: AlphaSphereDotAI/helpr_action/ci/tools/opencode@62622aebaf656b35fefa4b799dcac999cf57b20e # v0.0.18
       if: ${{ inputs.opencode_enabled == 'true' }}
       with:
         opencode_model: ${{ inputs.opencode_model }}
         opencode_api_key: ${{ inputs.opencode_api_key }}
     # UV Lock Sync
     - name: Sync dependencies in uv.lock
-      uses: AlphaSphereDotAI/helpr_action/ci/tools/uv_lock@569dece1c0b188e290617d6800f86b1ae3cf8c32 # v0.0.18
+      uses: AlphaSphereDotAI/helpr_action/ci/tools/uv_lock@62622aebaf656b35fefa4b799dcac999cf57b20e # v0.0.18
       if: ${{ inputs.uv_lock_sync_enabled == 'true' }}
