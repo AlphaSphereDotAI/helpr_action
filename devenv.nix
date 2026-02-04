@@ -82,6 +82,7 @@
   # https://devenv.sh/basics/
   env = {
     SARIF_DIR = "../results";
+    UV_WORKING_DIR = "./.dagger";
   };
 
   # https://devenv.sh/packages/
@@ -100,6 +101,14 @@
     nix = {
       enable = true;
       lsp.enable = true;
+    };
+    python = {
+      enable = true;
+      directory = "./.dagger";
+      uv = {
+        enable = true;
+        sync.enable = true;
+      };
     };
   };
 
