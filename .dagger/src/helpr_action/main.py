@@ -46,9 +46,12 @@ class HelprAction:
         ]
 
     @function
-    def get_python_version(self) -> str:
+    def get_python_version(
+        self,
+        file: Annotated[str, Doc("path to pyproject.toml file")] = "pyproject.toml",
+    ) -> str:
         """Return the Python version used in pyproject.toml."""
-        pyproject_path = Path("pyproject.toml")
+        pyproject_path: Path = Path(file)
         if not pyproject_path.exists():
             msg = "pyproject.toml not found"
             raise FileNotFoundError(msg)
