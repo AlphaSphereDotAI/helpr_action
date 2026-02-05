@@ -82,7 +82,7 @@
   # https://devenv.sh/basics/
   env = {
     SARIF_DIR = "../results";
-    UV_WORKING_DIR = "./.dagger";
+    UV_WORKING_DIR = "${config.git.root}/.dagger";
   };
 
   # https://devenv.sh/packages/
@@ -104,7 +104,7 @@
     };
     python = {
       enable = true;
-      directory = "./.dagger";
+      directory = config.env.UV_WORKING_DIR;
       uv = {
         enable = true;
         sync.enable = true;
