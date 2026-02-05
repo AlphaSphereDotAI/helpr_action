@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Annotated
 
 import dagger
-from dagger import BuildArg, Doc, dag, function, object_type
+from dagger import Doc, dag, function, object_type
 
 
 def get_image_tag(github_ref: str) -> list[str]:
@@ -33,7 +33,7 @@ class HelprAction:
     async def build_and_publish(
         self,
         src: Annotated[dagger.Directory, Doc("location of directory containing Dockerfile")],
-        build_args: list[BuildArg],
+        build_args: list[str],
         image_registry: Annotated[str, Doc("registry of the image to publish")],
         image_name: Annotated[str, Doc("image name of the image to publish")],
         github_ref: Annotated[str, Doc("GitHub ref to determine image tag")],
