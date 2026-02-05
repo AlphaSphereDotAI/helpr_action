@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from dagger import Container, Directory, Doc, dag, function, object_type
+from dagger import BuildArg, Container, Directory, Doc, dag, function, object_type
 
 
 def get_image_tag(github_ref: str) -> list[str]:
@@ -37,8 +37,11 @@ class HelprAction:
     ) -> list[str]:
         """Build and publish image from existing Dockerfile."""
         image_tags: list[str] = get_image_tag(github_ref)
+        _build_args: list[BuildArg] = [
+            BuildArg(name=arg.split("=", 1)[0], value=arg.split("=", 1)[1]) for arg in build_args
+        ]
         return [
-            await src.docker_build(build_args=build_args).publish(f"{image_registry}/{image_name}:{image_tag}")
+            await src.docker_build(build_args=_build_args).publish(f"{image_registry}/{image_name}:{image_tag}")
             for image_tag in image_tags
         ]
 
