@@ -9,6 +9,11 @@
       "name": "wolfi",
       "source": "github.com/dagger/dagger/modules/wolfi@v0.18.19",
       "pin": "4c0989b202a02fcee68c9f983f7f1671c6c397b8"
+    },
+    {
+      "name": "yq",
+      "source": "github.com/Dudesons/daggerverse/yq@yq/v0.6.0",
+      "pin": "9348808c60af026c9ad036e9c8ce37da962dc979"
     }
   ],
   "source": ".dagger"
