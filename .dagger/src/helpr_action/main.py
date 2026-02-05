@@ -1,5 +1,3 @@
-import tomllib
-from pathlib import Path
 from typing import Annotated
 
 from dagger import Container, Directory, Doc, dag, function, object_type
@@ -45,19 +43,9 @@ class HelprAction:
         ]
 
     @function
-    def get_python_version(
+    async def get_python_version(
         self,
-        file: Annotated[str, Doc("path to pyproject.toml file")] = "pyproject.toml",
+        src: Annotated[Directory, Doc("location of directory containing Dockerfile")],
     ) -> str:
         """Return the Python version used in pyproject.toml."""
-        pyproject_path: Path = Path(file)
-        if not pyproject_path.exists():
-            msg = "pyproject.toml not found"
-            raise FileNotFoundError(msg)
-        with pyproject_path.open("rb") as f:
-            pyproject_data = tomllib.load(f)
-        requires_python = pyproject_data["project"]["requires-python"]
-        requires_python = requires_python.removeprefix(">=")
-        if "," in requires_python:
-            requires_python = requires_python.split(",")[0].strip()
-        return requires_python
+        return await dag.yq(src).get(".project.requires-python", "pyproject.toml")
