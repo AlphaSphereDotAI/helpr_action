@@ -35,13 +35,16 @@ class HelprAction:
         return dag.container().from_("alpine:latest").with_exec(["echo", string_arg])
 
     @function
-    async def grep_dir(self, directory_arg: dagger.Directory, pattern: str) -> str:
-        """Return lines that match a pattern in the files of the provided Directory."""
-        return await (
-            dag.container()
-            .from_("alpine:latest")
-            .with_mounted_directory("/mnt", directory_arg)
-            .with_workdir("/mnt")
-            .with_exec(["grep", "-R", pattern, "."])
-            .stdout()
-        )
+    def get_python_version(self) -> str:
+        """Return the Python version used in pyproject.toml."""
+        pyproject_path = Path("pyproject.toml")
+        if not pyproject_path.exists():
+            msg = "pyproject.toml not found"
+            raise FileNotFoundError(msg)
+        with pyproject_path.open("rb") as f:
+            pyproject_data = tomllib.load(f)
+        requires_python = pyproject_data["project"]["requires-python"]
+        requires_python = requires_python.removeprefix(">=")
+        if "," in requires_python:
+            requires_python = requires_python.split(",")[0].strip()
+        return requires_python
