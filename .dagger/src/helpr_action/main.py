@@ -7,6 +7,11 @@ class HelprAction:
     """Dagger object type for HelprAction."""
 
     @function
+    def base(self) -> dagger.Container:
+        """Return a base container."""
+        return dag.wolfi().container()
+
+    @function
     def container_echo(self, string_arg: str) -> dagger.Container:
         """Return a container that echoes whatever string argument is provided."""
         return dag.container().from_("alpine:latest").with_exec(["echo", string_arg])
