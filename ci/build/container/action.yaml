@@ -14,96 +14,54 @@ inputs:
     required: false
     description: GitHub Token
     default: ${{ github.token }}
+  github_source_repository:
+    required: true
+    description: GitHub Source Repository
   docker_token:
     required: false
     description: Docker Registry Token
+  image_name:
+    required: true
+    description: Image Name (e.g., my-image)
 outputs:
   image_tag:
     description: The built image tag
     value: ${{ steps.tag.outputs.TAG }}
   image_digest:
     description: The built image digest
-    value: ${{ steps.push.outputs.digest }}
+    value: ${{ steps.build_and_publish.outputs.digest }}
 runs:
   using: composite
   steps:
-    # check_dockerfile
-    - name: Check Dockerfile
-      uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
-      id: dockerfile_lint
-      with:
-        call: check
-    - name: Job Summary
-      if: success() || failure()
-      shell: bash
-      run: |
-        DOCKERFILE_STATUS="${{ steps.dockerfile_lint.outcome == 'success' && ':white_check_mark:' || ':x:' }}"
-        echo '## Dockerfile Check' >> $GITHUB_STEP_SUMMARY
-        echo '' >> $GITHUB_STEP_SUMMARY
-        echo '- **Dockerfile Linting**' >> $GITHUB_STEP_SUMMARY
-        echo '  - **Step Name**: Check Dockerfile' >> $GITHUB_STEP_SUMMARY
-        echo '    - **Status**: $DOCKERFILE_STATUS' >> $GITHUB_STEP_SUMMARY
     # build_image
-    - name: Free Disk Space
-      uses: endersonmenezes/free-disk-space@e6ed9b02e683a3b55ed0252f1ee469ce3b39a885 # v3.1.0
-      if: ${{ steps.dockerfile_lint.outcome == 'success' }}
-      with:
-        remove_android: true
-        remove_dotnet: true
-        remove_haskell: true
-        remove_tool_cache: true
-        remove_swap: true
-        remove_packages_one_command: true
-        rm_cmd: rmz
-        remove_folders: >-
-          /usr/share /usr/local/lib /usr/local/share /usr/local
-    - name: Get Python version from pyproject.toml
+    - name: Get Python version
+      uses: dagger/dagger-for-github@v8.2.0
       id: get_python_version
-      uses: mikefarah/yq@2be0094729a1006f61e8339ce9934bfb3cbb549f # v4.52.2
       with:
-        cmd: yq -roy '.project.requires-python' pyproject.toml
-    - name: Log in to ${{ inputs.registry }} Registry
-      uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        args: >-
+          get-python-version
+          --src ${{ inputs.github_source_repository }}
+        cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
+    - name: Build and Push Image
+      id: build_and_publish
+      uses: dagger/dagger-for-github@v8.2.0
       with:
-        registry: ${{ inputs.registry }}
-        username: mh0386
-        password: >-
-          ${{ inputs.registry == 'ghcr.io' && inputs.github_token || inputs.registry == 'docker.io' && inputs.docker_token }}
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
-    - name: Docker meta
-      id: meta
-      uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
-      with:
-        images: ${{ inputs.registry }}/${{ github.repository }}
-        tags: |
-          type=raw,value=latest,enable=${{ github.event_name == 'push' && contains(github.ref, 'refs/tags/') }}
-          type=ref,event=pr,prefix={{sha}}-pr-
-          type=ref,event=tag
-          type=ref,event=branch
-    - name: Build and Push to ${{ inputs.registry }}
-      uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
-      id: push
-      with:
-        push: true
-        sbom: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        annotations: ${{ steps.meta.outputs.annotations }}
-        build-args: |
-          INSTALL_SOURCE=${{ inputs.install_source }}
-          PYTHON_VERSION=${{ steps.get_python_version.outputs.result }}
-      env:
-        DOCKER_CONTENT_TRUST: '1'
+        args: >-
+          build-and-publish
+          --github-ref ${{ github.ref }}
+          --image-name ${{ inputs.image_name }}
+          --image-registry ${{ inputs.registry }}
+          --src ${{ inputs.github_source_repository }}
+          --build-args INSTALL_SOURCE=${{ inputs.install_source }}
+          --build-args PYTHON_VERSION=${{ steps.get_python_version.outputs.output }}
+        cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
     - name: Generate artifact attestation
       uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
       if: ${{ inputs.is_test == false }}
       with:
         subject-name: >-
           ${{inputs.registry == 'docker.io' && 'index.docker.io' || inputs.registry}}/${{github.repository}}
-        subject-digest: ${{ steps.push.outputs.digest }}
+        subject-digest: ${{ steps.build_and_publish.outputs.digest }}
         push-to-registry: true
     - name: Update Docker Hub Description
       if: ${{ inputs.registry == 'docker.io' }}
@@ -117,4 +75,4 @@ runs:
     - name: Export tag for Testing and Scanning
       id: tag
       shell: bash
-      run: echo "TAG=$(echo "${{ steps.meta.outputs.tags }}" | tail -n 1)" >> $GITHUB_OUTPUT
+      run: echo "TAG=$(echo "${{ steps.build_and_publish.outputs.output }}" | tail -n 1)" >> $GITHUB_OUTPUT
