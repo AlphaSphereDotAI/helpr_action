@@ -2,8 +2,7 @@ import tomllib
 from pathlib import Path
 from typing import Annotated
 
-import dagger
-from dagger import Doc, dag, function, object_type
+from dagger import Container, Directory, Doc, dag, function, object_type
 
 
 def get_image_tag(github_ref: str) -> list[str]:
@@ -25,14 +24,14 @@ class HelprAction:
     """Dagger object type for HelprAction."""
 
     @function
-    def base(self) -> dagger.Container:
+    def base(self) -> Container:
         """Return a base container."""
         return dag.wolfi().container()
 
     @function
     async def build_and_publish(
         self,
-        src: Annotated[dagger.Directory, Doc("location of directory containing Dockerfile")],
+        src: Annotated[Directory, Doc("location of directory containing Dockerfile")],
         build_args: list[str],
         image_registry: Annotated[str, Doc("registry of the image to publish")],
         image_name: Annotated[str, Doc("image name of the image to publish")],
