@@ -30,9 +30,20 @@ class HelprAction:
         return dag.wolfi().container()
 
     @function
-    def container_echo(self, string_arg: str) -> dagger.Container:
-        """Return a container that echoes whatever string argument is provided."""
-        return dag.container().from_("alpine:latest").with_exec(["echo", string_arg])
+    async def build_and_publish(
+        self,
+        src: Annotated[dagger.Directory, Doc("location of directory containing Dockerfile")],
+        build_args: list[BuildArg],
+        image_registry: Annotated[str, Doc("registry of the image to publish")],
+        image_name: Annotated[str, Doc("image name of the image to publish")],
+        github_ref: Annotated[str, Doc("GitHub ref to determine image tag")],
+    ) -> list[str]:
+        """Build and publish image from existing Dockerfile."""
+        image_tags: list[str] = get_image_tag(github_ref)
+        return [
+            await src.docker_build(build_args=build_args).publish(f"{image_registry}/{image_name}:{image_tag}")
+            for image_tag in image_tags
+        ]
 
     @function
     def get_python_version(self) -> str:
