@@ -6,6 +6,21 @@
   },
   "dependencies": [
     {
+      "name": "devenv",
+      "source": "github.com/tsirysndr/daggerverse/devenv@0585680a6ac12911a40c9ca451bb44f9bf01bd13",
+      "pin": "0585680a6ac12911a40c9ca451bb44f9bf01bd13"
+    },
+    {
+      "name": "nix",
+      "source": "github.com/tsirysndr/daggerverse/nix@06ff14707b36c781eaa41a01072564fbe4172eef",
+      "pin": "06ff14707b36c781eaa41a01072564fbe4172eef"
+    },
+    {
+      "name": "python",
+      "source": "github.com/act3-ai/dagger/python@python/v0.7.0",
+      "pin": "2625790a005c162678b784f9dac52fcfdf303a86"
+    },
+    {
       "name": "wolfi",
       "source": "github.com/dagger/dagger/modules/wolfi@v0.18.19",
       "pin": "4c0989b202a02fcee68c9f983f7f1671c6c397b8"
