@@ -1,5 +1,6 @@
 from typing import Annotated
 
+from anyio import open_file
 from dagger import BuildArg, Container, Directory, Doc, dag, function, object_type
 
 
@@ -57,3 +58,21 @@ class HelprAction:
     ) -> str:
         """Return the Python version used in pyproject.toml."""
         return await dag.yq(src).get(".project.requires-python", "pyproject.toml")
+
+    @function
+    async def ruff(self, src: Directory) -> str:
+        """Return a container with ruff installed."""
+        sarif_file: str = await dag.python(src).ruff().lint(output_format="sarif").file("ruff.sarif").contents()
+        async with await open_file("ruff.sarif", "w") as f:
+            await f.write(sarif_file)
+        return sarif_file
+
+    @function
+    async def uv_lock_check(self, src: Directory) -> str:
+        """Check if the uv.lock file is up to date."""
+        return await dag.python(src).check_lock()
+
+    @function
+    async def ls_lint(self, src: Directory) -> str:
+        """Return a container with ls-lint installed."""
+        return await self.nix(src=src).with_exec(["nix-shell", "-p", "ls-lint", "--run", "ls_lint"]).stdout()
