@@ -39,21 +39,14 @@ runs:
       id: get_python_version
       with:
         args: >-
-          get-python-version
-          --src ${{ inputs.github_source_repository }}
+          get-python-version --src ${{ inputs.github_source_repository }}
         cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
     - name: Build and Push Image
       id: build_and_publish
       uses: dagger/dagger-for-github@v8.2.0
       with:
         args: >-
-          build-and-publish
-          --github-ref ${{ github.ref }}
-          --image-name ${{ inputs.image_name }}
-          --image-registry ${{ inputs.registry }}
-          --src ${{ inputs.github_source_repository }}
-          --build-args INSTALL_SOURCE=${{ inputs.install_source }}
-          --build-args PYTHON_VERSION=${{ steps.get_python_version.outputs.output }}
+          build-and-publish --github-ref ${{ github.ref }} --image-name ${{ inputs.image_name }} --image-registry ${{ inputs.registry }} --src ${{ inputs.github_source_repository }} --build-args INSTALL_SOURCE=${{ inputs.install_source }} --build-args PYTHON_VERSION=${{ steps.get_python_version.outputs.output }}
         cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
     - name: Generate artifact attestation
       uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
