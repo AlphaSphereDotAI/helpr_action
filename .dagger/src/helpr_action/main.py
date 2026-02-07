@@ -27,6 +27,11 @@ class HelprAction:
         return dag.wolfi().container()
 
     @function
+    def nix(self, src: Directory) -> Container:
+        """Return a container with nix installed."""
+        return dag.nix().setup_nix(src=src)
+
+    @function
     async def build_and_publish(
         self,
         src: Annotated[Directory, Doc("location of directory containing Dockerfile")],
