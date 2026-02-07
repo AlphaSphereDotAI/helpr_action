@@ -22,7 +22,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
+        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
         with:
           egress-policy: audit
       - run: echo '${{ toJson(github.event) }}'
@@ -32,7 +32,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
       - name: Setup Devenv
-        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@16bfcbb864e2edad7d0eab0c2274249031d62b40 # v0.0.18
+        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@c7a2412844ab2b2b72f7199ebc88155e7c2acd1f # v0.0.20
       - name: Test
         run: devenv test
       - name: Commit pre-commit fixes
@@ -57,7 +57,7 @@ jobs:
           contains(github.event.commits[0].message, 'chore(deps): update') }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
+        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
         with:
           egress-policy: audit
       - run: echo '${{ toJson(github.event) }}'
@@ -68,7 +68,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0
       - name: Setup Devenv
-        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@16bfcbb864e2edad7d0eab0c2274249031d62b40 # v0.0.18
+        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@c7a2412844ab2b2b72f7199ebc88155e7c2acd1f # v0.0.20
       - name: Bump git version
         id: get_git_version
         if: ${{ ! contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action') }}
@@ -102,7 +102,7 @@ jobs:
         github.ref_type == 'tag' }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
+        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
         with:
           egress-policy: audit
       - name: Checkout repository
