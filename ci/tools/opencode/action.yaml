@@ -12,7 +12,7 @@ runs:
   using: composite
   steps:
     - name: Run opencode
-      uses: sst/opencode/github@579902ace6e9fb925f50b7d9fdf11a6b47895307 # v1.1.53
+      uses: sst/opencode/github@fbc41475b403a23f004f63289b264c224b9d6b2f # v1.1.55
       env:
         OPENCODE_API_KEY: ${{ inputs.opencode_api_key }}
       with:
