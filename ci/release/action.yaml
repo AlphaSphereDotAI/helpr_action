@@ -7,7 +7,7 @@ inputs:
   packages_dir:
     description: Directory containing packages to publish
     required: false
-    default: 'dist/'
+    default: "dist/"
   registry:
     description: Registry to publish to
     required: true

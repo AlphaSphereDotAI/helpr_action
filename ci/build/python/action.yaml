@@ -4,7 +4,7 @@ inputs:
   update_version:
     description: Whether to update the version to match the tag
     required: false
-    default: 'true'
+    default: "true"
   target_version:
     description: Target version to set (defaults to tag name)
     required: false
@@ -38,7 +38,7 @@ runs:
         ${{ (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result }}
       uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
       with:
-        commit_message: 'Version: ${{ inputs.target_version || github.ref_name }}'
+        commit_message: "Version: ${{ inputs.target_version || github.ref_name }}"
         branch: main
         commit_options: --no-verify
     - name: Update the tag to the updated version
