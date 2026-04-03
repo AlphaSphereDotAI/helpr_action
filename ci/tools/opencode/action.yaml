@@ -2,9 +2,15 @@ name: OpenCode Tool
 description: Run OpenCode to assist with code generation and improvements
 inputs:
   model:
-    description: Opencode model to use
+    description: "Model to use"
+    required: true
+    default: "opencode/big-pickle"
+  agent:
+    description: "Agent to use. Must be a primary agent. Falls back to default_agent from config or 'build' if not found."
     required: false
-    default: 'opencode/big-pickle'
+  prompt:
+    description: "Custom prompt to override the default prompt"
+    required: false
   api_key:
     description: Opencode API key
     required: true
@@ -12,12 +18,14 @@ runs:
   using: composite
   steps:
     - name: Checkout repository
-      uses: actions/checkout@v6
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         persist-credentials: false
     - name: Run opencode
-      uses: anomalyco/opencode/github@715b844c2a88810b6178d7a2467c7d36ea8fb764 # v1.2.17
+      uses: anomalyco/opencode/github@6314f09c14fdd6a3ab8bedc4f7b7182647551d12 # v1.3.13
       env:
         OPENCODE_API_KEY: ${{ inputs.api_key }}
       with:
         model: ${{ inputs.model }}
+        agent: ${{ inputs.agent }}
+        prompt: ${{ inputs.prompt }}
