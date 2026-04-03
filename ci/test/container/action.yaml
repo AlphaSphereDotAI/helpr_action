@@ -50,7 +50,7 @@ runs:
         trivy-config: .github/lint/.trivy.yaml
         format: sarif
         output: ../results/trivy-results-image.sarif
-        exit-code: '1'
+        exit-code: "1"
         scanners: vuln,secret,misconfig,license
     # dockle
     - name: Lint the Container Image
