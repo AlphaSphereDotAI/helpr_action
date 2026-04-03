@@ -1,19 +1,23 @@
 name: OpenCode Tool
 description: Run OpenCode to assist with code generation and improvements
 inputs:
-  opencode_model:
+  model:
     description: Opencode model to use
     required: false
-    default: 'opencode/grok-code'
-  opencode_api_key:
+    default: 'opencode/big-pickle'
+  api_key:
     description: Opencode API key
     required: true
 runs:
   using: composite
   steps:
-    - name: Run opencode
-      uses: sst/opencode/github@715b844c2a88810b6178d7a2467c7d36ea8fb764 # v1.2.17
-      env:
-        OPENCODE_API_KEY: ${{ inputs.opencode_api_key }}
+    - name: Checkout repository
+      uses: actions/checkout@v6
       with:
-        model: ${{ inputs.opencode_model }}
+        persist-credentials: false
+    - name: Run opencode
+      uses: anomalyco/opencode/github@715b844c2a88810b6178d7a2467c7d36ea8fb764 # v1.2.17
+      env:
+        OPENCODE_API_KEY: ${{ inputs.api_key }}
+      with:
+        model: ${{ inputs.model }}
