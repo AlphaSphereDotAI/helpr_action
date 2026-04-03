@@ -27,3 +27,5 @@ runs:
         OPENCODE_API_KEY: ${{ inputs.api_key }}
       with:
         model: ${{ inputs.model }}
+        agent: ${{ inputs.agent }}
+        prompt: ${{ inputs.prompt }}
