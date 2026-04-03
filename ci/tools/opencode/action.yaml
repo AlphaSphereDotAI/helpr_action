@@ -4,7 +4,7 @@ inputs:
   opencode_model:
     description: Opencode model to use
     required: false
-    default: 'opencode/grok-code'
+    default: 'opencode/big-pickle'
   opencode_api_key:
     description: Opencode API key
     required: true
