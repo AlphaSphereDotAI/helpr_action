@@ -2,9 +2,15 @@ name: OpenCode Tool
 description: Run OpenCode to assist with code generation and improvements
 inputs:
   model:
-    description: Opencode model to use
-    required: false
+    description: "Model to use"
+    required: true
     default: "opencode/big-pickle"
+  agent:
+    description: "Agent to use. Must be a primary agent. Falls back to default_agent from config or 'build' if not found."
+    required: false
+  prompt:
+    description: "Custom prompt to override the default prompt"
+    required: false
   api_key:
     description: Opencode API key
     required: true
@@ -21,3 +27,5 @@ runs:
         OPENCODE_API_KEY: ${{ inputs.api_key }}
       with:
         model: ${{ inputs.model }}
+        agent: ${{ inputs.agent }}
+        prompt: ${{ inputs.prompt }}
