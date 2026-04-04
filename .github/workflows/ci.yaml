@@ -52,6 +52,7 @@ jobs:
       issues: write
     if: >-
       ${{ github.event_name == 'push' &&
+
           github.ref_type == 'branch' &&
           github.event.commits[0].author.name == 'renovate[bot]' &&
           contains(github.event.commits[0].message, 'chore(deps): update') }}
@@ -99,6 +100,7 @@ jobs:
       issues: write
     if: >-
       ${{ github.event_name == 'push' &&
+
         github.ref_type == 'tag' }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
