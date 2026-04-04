@@ -32,7 +32,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
       - name: Setup Devenv
-        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@a1bf561f6b9cf075852b62400b5fd55fbbde50a5 # v0.0.53
+        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@d6ab5bf6bffa267654e49e0fcfdcadea642f7a33 # v0.0.53
       - name: Test
         run: devenv test
       - name: Commit pre-commit fixes
@@ -68,7 +68,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0
       - name: Setup Devenv
-        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@a1bf561f6b9cf075852b62400b5fd55fbbde50a5 # v0.0.53
+        uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@d6ab5bf6bffa267654e49e0fcfdcadea642f7a33 # v0.0.53
       - name: Bump git version
         id: get_git_version
         if: ${{ ! contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action') }}
