@@ -110,21 +110,21 @@ runs:
       with:
         cmd: yq -iroy '.imports = ["./repo"]' devenv.yaml
     - name: Setup Devenv
-      uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@d6ab5bf6bffa267654e49e0fcfdcadea642f7a33 # v0.0.53
+      uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@1366cc272555c4b65a598b5fb62532e3cede53d9 # v0.0.53
     - run: ls -lah
       shell: bash
     - name: Build Container
-      uses: AlphaSphereDotAI/helpr_action/ci/build/container@d6ab5bf6bffa267654e49e0fcfdcadea642f7a33 # v0.0.53
+      uses: AlphaSphereDotAI/helpr_action/ci/build/container@1366cc272555c4b65a598b5fb62532e3cede53d9 # v0.0.53
       if: ${{ inputs.build_container == 'true' }}
       with:
         is_test: ${{ inputs.is_test }}
         registry: ${{ inputs.registry }}
         install_source: ${{ inputs.install_source }}
     - name: Build Python Package
-      uses: AlphaSphereDotAI/helpr_action/ci/build/python@d6ab5bf6bffa267654e49e0fcfdcadea642f7a33 # v0.0.53
+      uses: AlphaSphereDotAI/helpr_action/ci/build/python@1366cc272555c4b65a598b5fb62532e3cede53d9 # v0.0.53
       if: ${{ inputs.build_python == 'true' }}
     - name: CI Tools
-      uses: AlphaSphereDotAI/helpr_action/ci/tools@d6ab5bf6bffa267654e49e0fcfdcadea642f7a33 # v0.0.53
+      uses: AlphaSphereDotAI/helpr_action/ci/tools@1366cc272555c4b65a598b5fb62532e3cede53d9 # v0.0.53
       if: ${{ inputs.ci_tools == 'true' }}
       with:
         opencode_enabled: ${{ inputs.opencode_enabled }}
@@ -132,14 +132,14 @@ runs:
         opencode_model: ${{ inputs.opencode_model }}
         opencode_api_key: ${{ inputs.opencode_api_key }}
     - name: Release Mode
-      uses: AlphaSphereDotAI/helpr_action/ci/release@d6ab5bf6bffa267654e49e0fcfdcadea642f7a33 # v0.0.53
+      uses: AlphaSphereDotAI/helpr_action/ci/release@1366cc272555c4b65a598b5fb62532e3cede53d9 # v0.0.53
       if: ${{ inputs.release == 'true' }}
       with:
         tag_name: ${{ github.tag_name }}
         packages_dir: ${{ inputs.packages_dir }}
         registry: ${{ inputs.registry }}
     - name: Test Mode
-      uses: AlphaSphereDotAI/helpr_action/ci/test@d6ab5bf6bffa267654e49e0fcfdcadea642f7a33 # v0.0.53
+      uses: AlphaSphereDotAI/helpr_action/ci/test@1366cc272555c4b65a598b5fb62532e3cede53d9 # v0.0.53
       if: ${{ inputs.is_test == 'true' }}
       with:
         linter: ${{ inputs.linter }}
@@ -150,5 +150,5 @@ runs:
         dependency_compatibility_tool: ${{ inputs.dependency_compatibility_tool }}
         test_dependency_compatibility: ${{ inputs.test_dependency_compatibility }}
     - name: Bump Version
-      uses: AlphaSphereDotAI/helpr_action/ci/version@d6ab5bf6bffa267654e49e0fcfdcadea642f7a33 # v0.0.53
+      uses: AlphaSphereDotAI/helpr_action/ci/version@1366cc272555c4b65a598b5fb62532e3cede53d9 # v0.0.53
       if: ${{ inputs.version == 'true' }}
