@@ -22,7 +22,7 @@ runs:
       with:
         persist-credentials: false
     - name: Run opencode
-      uses: anomalyco/opencode/github@930e94a3ea098b9d56fcb6d08b545256d2546a82 # v1.3.15
+      uses: anomalyco/opencode/github@517e6c9aa4c61dbc125e7654fc596f1d529f20d9 # v1.3.17
       env:
         OPENCODE_API_KEY: ${{ inputs.api_key }}
       with:
