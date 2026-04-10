@@ -15,7 +15,7 @@ runs:
   using: composite
   steps:
     - name: Publish release distributions to PyPI
-      uses: AlphaSphereDotAI/helpr_action/ci/release/pypi@c53f42014c9d1a65e82e2972213968c61ddc6670 # v0.0.60
+      uses: AlphaSphereDotAI/helpr_action/ci/release/pypi@7d2e88985246a46a288779dda47470ba31988511 # v0.0.61
       if: ${{ inputs.registry == 'pypi' }}
       with:
         tag_name: ${{ inputs.tag_name }}
