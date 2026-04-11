@@ -19,6 +19,13 @@ runs:
         echo "::add-matcher::.github/actionlint-matcher.json"
         actionlint -color
       shell: bash
+    # Hadolint
+    - name: Hadolint
+      if: ${{ inputs.linter == 'hadolint' }}
+      uses: hadolint/hadolint-action@2332a7b74a6de0dda2e2221d575162eba76ba5e5 # v3.3.0
+      with:
+        format: sarif
+        output-file: ../results/hadolint.sarif
     # Ruff
     - name: Ruff
       if: ${{ inputs.linter == 'ruff' }}
