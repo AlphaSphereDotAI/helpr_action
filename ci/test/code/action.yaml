@@ -15,9 +15,7 @@ runs:
     - name: ActionLint
       if: ${{ inputs.linter == 'actionlint' }}
       run: >-
-        curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/.github/actionlint-matcher.json -o .github/actionlint-matcher.json
-        echo "::add-matcher::.github/actionlint-matcher.json"
-        actionlint -color
+        curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/.github/actionlint-matcher.json -o .github/actionlint-matcher.json echo "::add-matcher::.github/actionlint-matcher.json" actionlint -color
       shell: bash
     # Hadolint
     - name: Hadolint
