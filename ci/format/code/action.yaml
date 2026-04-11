@@ -11,6 +11,11 @@ inputs:
 runs:
   using: composite
   steps:
+    # YamlFix
+    - name: YamlFix
+      if: ${{ inputs.formater == 'yamlfix' }}
+      run: uvx yamlfix . -e "**/*.lock.yml"
+      shell: bash
     # Ruff
     - name: Ruff
       if: ${{ inputs.linter == 'ruff' }}
