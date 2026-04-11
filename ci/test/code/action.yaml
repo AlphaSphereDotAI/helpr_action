@@ -33,6 +33,11 @@ runs:
       with:
         globs: "**/*.md"
         fix: true
+    # Ty
+    - name: Ty
+      if: ${{ inputs.linter == 'ty' }}
+      run: ty check --output-format github
+      shell: bash
     # Ruff
     - name: Ruff
       if: ${{ inputs.linter == 'ruff' }}
