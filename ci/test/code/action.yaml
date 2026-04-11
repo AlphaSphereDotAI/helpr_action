@@ -98,7 +98,6 @@ runs:
     - name: Scan current project
       uses: anchore/scan-action@8d2fce09422cd6037e577f4130e9b925e9a37175 # v7.3.1
       if: ${{ inputs.linter == 'grype' }}
-      id: scan
       with:
         path: .
         cache-db: true
@@ -125,6 +124,7 @@ runs:
         trivy-config: .github/lint/.trivy.yaml
         format: sarif
         output: ../results/trivy-results-config.sarif
+        github-pat: ${{ inputs.github_token }}
         exit-code: "1"
         scanners: vuln,secret,misconfig
     # Trivy filesystem scan
@@ -136,6 +136,7 @@ runs:
         trivy-config: .github/lint/.trivy.yaml
         format: github
         output: dependency-results.sbom.json
+        github-pat: ${{ inputs.github_token }}
         exit-code: "1"
         scanners: vuln,secret,misconfig
     - name: Upload trivy report as a Github artifact
