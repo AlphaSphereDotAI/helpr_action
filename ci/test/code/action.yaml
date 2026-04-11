@@ -17,6 +17,10 @@ runs:
       uses: astral-sh/ruff-action@4919ec5cf1f49eff0871dbcea0da843445b837e6 # v3.6.1
       with:
         args: check --output-format sarif --output-file ruff.sarif
+    # ls-lint
+    - name: Lint file names
+      if: ${{ inputs.linter == 'ls_lint' }}
+      uses: ls-lint/action@02e380fe8733d499cbfc9e22276de5085508a5bd # v2.3.1
     # Taplo
     - name: Taplo
       if: ${{ inputs.linter == 'taplo' }}
