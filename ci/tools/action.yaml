@@ -12,6 +12,12 @@ inputs:
   opencode_api_key:
     description: Opencode API key
     required: true
+  opencode_agent:
+    description: Opencode agent to use
+    required: false
+  opencode_prompt:
+    description: Opencode prompt to use
+    required: false
   uv_lock_sync_enabled:
     description: Enable uv lock sync
     required: false
@@ -24,8 +30,10 @@ runs:
       uses: AlphaSphereDotAI/helpr_action/ci/tools/opencode@21ba2cfc23a822e7a443256209847b493ea2eec5 # v0.0.62
       if: ${{ inputs.opencode_enabled == 'true' }}
       with:
-        opencode_model: ${{ inputs.opencode_model }}
-        opencode_api_key: ${{ inputs.opencode_api_key }}
+        model: ${{ inputs.opencode_model }}
+        api_key: ${{ inputs.opencode_api_key }}
+        agent: ${{ inputs.opencode_agent }}
+        prompt: ${{ inputs.opencode_prompt }}
     # UV Lock Sync
     - name: Sync dependencies in uv.lock
       uses: AlphaSphereDotAI/helpr_action/ci/tools/uv_lock@21ba2cfc23a822e7a443256209847b493ea2eec5 # v0.0.62
