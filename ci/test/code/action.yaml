@@ -38,6 +38,11 @@ runs:
       if: ${{ inputs.linter == 'ty' }}
       run: ty check --output-format github
       shell: bash
+    # YamlLint
+    - name: YamlLint
+      if: ${{ inputs.linter == 'yamllint' }}
+      run: yamllint . --format github
+      shell: bash
     # Ruff
     - name: Ruff
       if: ${{ inputs.linter == 'ruff' }}
