@@ -132,3 +132,11 @@ runs:
     - name: Upload Scan SARIF reports
       if: ${{ always() && ! cancelled() }}
       uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
+    # Report
+    - name: Job Summary
+      uses: jazanne/job-summary-action@690eb386a0b86fe4da7c6f0e543e61330ff09f06 # v1.0.0
+      if: success() || failure()
+      with:
+        summary: |
+          ## UV Lock Check
+          - **Status**: ${{ steps.uv_lock_check.outcome == 'success' && ':white_check_mark:' || ':x:' }}
