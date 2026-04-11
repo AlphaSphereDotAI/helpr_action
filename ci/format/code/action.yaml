@@ -1,0 +1,24 @@
+name: Format
+description: Format the source code
+inputs:
+  formater:
+    description: Linter to use
+    required: true
+  github_token:
+    description: GitHub Token
+    required: false
+    default: ${{ github.token }}
+runs:
+  using: composite
+  steps:
+    # Taplo
+    - name: Taplo
+      if: ${{ inputs.linter == 'taplo' }}
+      run: taplo format
+      shell: bash
+    # Commit and push applied fixes
+    - name: Commit and push applied formatter fixes
+      uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
+      with:
+        commit_message: 'ci: Apply formatter fixes'
+        commit_options: --no-verify
