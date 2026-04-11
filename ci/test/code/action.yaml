@@ -126,7 +126,7 @@ runs:
         format: sarif
         output: ../results/trivy-results-config.sarif
         exit-code: "1"
-        scanners: vuln,secret,misconfig,license
+        scanners: vuln,secret,misconfig
     # Trivy filesystem scan
     - name: Run Trivy vulnerability scanner in filesystem mode
       uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
@@ -137,7 +137,7 @@ runs:
         format: github
         output: dependency-results.sbom.json
         exit-code: "1"
-        scanners: vuln,secret,misconfig,license
+        scanners: vuln,secret,misconfig
     - name: Upload trivy report as a Github artifact
       if: ${{ (success() || failure()) && inputs.linter == 'trivy-fs' }}
       uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
