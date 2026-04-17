@@ -5,14 +5,6 @@ inputs:
     description: Type of version bump (patch, minor, major)
     required: false
     default: "patch"
-  commit_changes:
-    description: Whether to commit version changes
-    required: false
-    default: "true"
-  create_tag:
-    description: Whether to create a git tag
-    required: false
-    default: "true"
 outputs:
   new_version:
     description: The new version after bumping
@@ -27,20 +19,8 @@ runs:
       id: get_package_version
       run: echo "result=$(uv version --short)" >> $GITHUB_OUTPUT
       shell: bash
-    - name: Commit updated version
-      if: ${{ inputs.commit_changes == 'true' }}
+    - name: Tag updated version
       uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
       with:
         commit_message: "Tag: ${{ steps.get_package_version.outputs.result }}"
         tagging_message: ${{ steps.get_package_version.outputs.result }}
-    - name: Create tag manually
-      if: ${{ inputs.create_tag == 'true' && inputs.commit_changes == 'false' }}
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add pyproject.toml
-        git commit -m "Tag: ${{ steps.get_package_version.outputs.result }}"
-        git tag ${{ steps.get_package_version.outputs.result }}
-        git push origin main
-        git push origin ${{ steps.get_package_version.outputs.result }}
-      shell: bash
