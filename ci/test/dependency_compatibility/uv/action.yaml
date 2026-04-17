@@ -1,5 +1,9 @@
 name: UV Dependency Compatibility Check
 description: Run dependency compatibility check for the Python project
+inputs:
+  shell:
+    description: Shell to use
+    default: bash
 outputs:
   dependency_check_status:
     description: Status of dependency compatibility check
@@ -10,7 +14,7 @@ runs:
     - name: Install the project
       id: dependency_check
       run: uv sync --frozen --no-install-project
-      shell: bash
+      shell: ${{ inputs.shell }}
     - name: Job Summary
       if: success() || failure()
       run: |
@@ -18,7 +22,7 @@ runs:
         echo "## Dependency Compatibility Check" >> $GITHUB_STEP_SUMMARY
         echo "- **Status**: $STATUS" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-      shell: bash
+      shell: ${{ inputs.shell }}
     - name: Show Dependency Tree
       if: steps.dependency_check.outcome == 'success'
       run: |
@@ -30,4 +34,4 @@ runs:
         echo "$(uv tree --show-sizes)" >> $GITHUB_STEP_SUMMARY
         echo '```' >> $GITHUB_STEP_SUMMARY
         echo "</details>" >> $GITHUB_STEP_SUMMARY
-      shell: bash
+      shell: ${{ inputs.shell }}
