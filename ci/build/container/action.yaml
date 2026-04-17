@@ -34,15 +34,12 @@ runs:
       with:
         call: check
     - name: Job Summary
+      uses: jazanne/job-summary-action@690eb386a0b86fe4da7c6f0e543e61330ff09f06 # v1.0.0
       if: success() || failure()
-      shell: bash
-      run: |
-        DOCKERFILE_STATUS="${{ steps.dockerfile_lint.outcome == 'success' && ':white_check_mark:' || ':x:' }}"
-        echo '## Dockerfile Check' >> $GITHUB_STEP_SUMMARY
-        echo '' >> $GITHUB_STEP_SUMMARY
-        echo '- **Dockerfile Linting**' >> $GITHUB_STEP_SUMMARY
-        echo '  - **Step Name**: Check Dockerfile' >> $GITHUB_STEP_SUMMARY
-        echo '    - **Status**: $DOCKERFILE_STATUS' >> $GITHUB_STEP_SUMMARY
+      with:
+        summary: |
+          ## Dockerfile Check
+          - **Status**: ${{ steps.dockerfile_lint.outcome == 'success' && ':white_check_mark:' || ':x:' }}
     # build_image
     - name: Free Disk Space
       uses: endersonmenezes/free-disk-space@7901478139cff6e9d44df5972fd8ab8fcade4db1 # v3.2.2
@@ -55,8 +52,7 @@ runs:
         remove_swap: true
         remove_packages_one_command: true
         rm_cmd: rmz
-        remove_folders: >-
-          /usr/share /usr/local/lib /usr/local/share /usr/local
+        remove_folders: /usr/share /usr/local
     - name: Get Python version from pyproject.toml
       id: get_python_version
       uses: mikefarah/yq@0f4fb8d35ec1a939d78dd6862f494d19ec589f19 # v4.52.5
