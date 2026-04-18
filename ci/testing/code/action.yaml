@@ -64,8 +64,9 @@ runs:
       if: ${{ inputs.linter == 'trufflehog' }}
       run: >-
         trufflehog git ${{github.event.repository.html_url}}
-        --branch=${{github.head_ref || github.ref_name}} --fail --github-actions
-        --results=verified,unknown --log-level=4  --no-update
+        --branch=${{github.head_ref||github.ref_name}} --fail --github-actions
+        --results=verified,unknown --log-level=4
+        --no-update
       shell: bash
     # Taplo
     - name: Taplo
