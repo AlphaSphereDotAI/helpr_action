@@ -27,7 +27,7 @@ runs:
   using: composite
   steps:
     - name: Test Dependency Compatibility
-      uses: AlphaSphereDotAI/helpr_action/ci/test/dependency_compatibility@v0.0.16
+      uses: AlphaSphereDotAI/helpr_action/ci/test/dependency_compatibility@406d2689f26da731dd51c56cb330ff1e02fcdff0 # v0.0.16
       if: ${{ inputs.test_dependency_compatibility == 'true' }}
       with:
         tool: ${{ inputs.dependency_compatibility_tool }}
