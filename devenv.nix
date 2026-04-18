@@ -26,6 +26,7 @@
         force_array_style = "block";
         force_quote_style = "double";
         scan_folded_as_literal = true;
+        max_line_length = 80;
       };
     };
     ".ruff.toml".toml = {
