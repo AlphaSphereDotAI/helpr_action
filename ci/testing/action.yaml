@@ -32,13 +32,13 @@ runs:
       with:
         tool: ${{ inputs.dependency_compatibility_tool }}
     - name: Test code
-      uses: AlphaSphereDotAI/helpr_action/ci/testing/code@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
+      uses: AlphaSphereDotAI/helpr_action/ci/testing/code@406d2689f26da731dd51c56cb330ff1e02fcdff0 # v0.0.16
       if: ${{ inputs.test_code == 'true' }}
       with:
         linter: ${{ inputs.linter }}
         github_token: ${{ inputs.github_token }}
     - name: Test Container Image
-      uses: AlphaSphereDotAI/helpr_action/ci/testing/container@ab519bfef4394b8adfe48cae8dbe6ec4ac7179ea # v0.0.16
+      uses: AlphaSphereDotAI/helpr_action/ci/testing/container@406d2689f26da731dd51c56cb330ff1e02fcdff0 # v0.0.16
       if: ${{ inputs.test_container == 'true' }}
       with:
         image_tag: ${{ inputs.image_tag }}
