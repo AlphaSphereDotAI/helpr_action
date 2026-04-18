@@ -14,8 +14,11 @@ runs:
     # ActionLint
     - name: ActionLint
       if: ${{ inputs.linter == 'actionlint' }}
-      run: >-
-        curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/.github/actionlint-matcher.json -o .github/actionlint-matcher.json; echo "::add-matcher::.github/actionlint-matcher.json"; actionlint -color
+      run: |-
+        ACTIONLINT_MATCHER_URL="https://raw.githubusercontent.com/rhysd/actionlint/main/.github/actionlint-matcher.json"
+        curl -fsSL "$ACTIONLINT_MATCHER_URL" -o .github/actionlint-matcher.json
+        echo "::add-matcher::.github/actionlint-matcher.json"
+        actionlint -color
       shell: bash
     # Hadolint
     - name: Hadolint
@@ -60,7 +63,9 @@ runs:
     - name: TruffleHog
       if: ${{ inputs.linter == 'trufflehog' }}
       run: >-
-        trufflehog git ${{github.event.repository.html_url}} --branch=${{github.head_ref || github.ref_name}} --fail --github-actions  --results=verified,unknown --log-level=4  --no-update
+        trufflehog git ${{github.event.repository.html_url}}
+        --branch=${{github.head_ref || github.ref_name}} --fail --github-actions
+        --results=verified,unknown --log-level=4  --no-update
       shell: bash
     # Taplo
     - name: Taplo
