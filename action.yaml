@@ -139,7 +139,7 @@ runs:
         packages_dir: ${{ inputs.packages_dir }}
         registry: ${{ inputs.registry }}
     - name: Test Mode
-      uses: AlphaSphereDotAI/helpr_action/ci/test@a9f70d8e5f15243c8c9994784e6f4e2a409c2d9a # v0.0.63
+      uses: AlphaSphereDotAI/helpr_action/ci/testing@a9f70d8e5f15243c8c9994784e6f4e2a409c2d9a # v0.0.63
       if: ${{ inputs.is_test == 'true' }}
       with:
         linter: ${{ inputs.linter }}
