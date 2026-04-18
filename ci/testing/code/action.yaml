@@ -88,7 +88,7 @@ runs:
         commit_options: --no-verify
     # Syft
     - name: SBOM Generation
-      uses: anchore/sbom-action@deef08a0db64bfad603422135db61477b16cef56 # v0.22.1
+      uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
       if: ${{ inputs.linter == 'syft' }}
       with:
         path: .
@@ -97,7 +97,7 @@ runs:
         format: syft-json
     # Grype
     - name: Scan current project
-      uses: anchore/scan-action@8d2fce09422cd6037e577f4130e9b925e9a37175 # v7.3.1
+      uses: anchore/scan-action@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2 # v7.4.0
       if: ${{ inputs.linter == 'grype' }}
       with:
         path: .
@@ -106,7 +106,7 @@ runs:
         output-file: ../results/grype-scan.sarif
     # Trivy repo scan
     - name: Run Trivy vulnerability scanner in repo mode
-      uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
+      uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
       if: ${{ inputs.linter == 'trivy-repo' }}
       with:
         scan-type: repo
@@ -118,7 +118,7 @@ runs:
         scanners: vuln,secret,misconfig,license
     # Trivy config scan
     - name: Run Trivy vulnerability scanner in config mode
-      uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
+      uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
       if: ${{ inputs.linter == 'trivy-config' }}
       with:
         scan-type: config
@@ -130,7 +130,7 @@ runs:
         scanners: vuln,secret,misconfig
     # Trivy filesystem scan
     - name: Run Trivy vulnerability scanner in filesystem mode
-      uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
+      uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
       if: ${{ inputs.linter == 'trivy-fs' }}
       with:
         scan-type: fs
@@ -142,7 +142,7 @@ runs:
         scanners: vuln,secret,misconfig
     - name: Upload trivy report as a Github artifact
       if: ${{ (success() || failure()) && inputs.linter == 'trivy-fs' }}
-      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: trivy-sbom-report
         path: dependency-results.sbom.json
@@ -159,7 +159,7 @@ runs:
     # Upload SARIF
     - name: Upload Scan SARIF reports
       if: ${{ always() && ! cancelled() }}
-      uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
+      uses: github/codeql-action/upload-sarif@95e58e9a2cdfd71adc6e0353d5c52f41a045d225 # v4.35.2
     # Report
     - name: Job Summary
       uses: jazanne/job-summary-action@690eb386a0b86fe4da7c6f0e543e61330ff09f06 # v1.0.0
