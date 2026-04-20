@@ -8,8 +8,7 @@ on:
     tags:
       - "v*.*.*"
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.id || github.ref_name
-    }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.id || github.ref_name }}
   cancel-in-progress: true
 jobs:
   test:
@@ -55,6 +54,7 @@ jobs:
       ${{ github.event_name == 'push' &&
 
 
+
           github.ref_type == 'branch' &&
           github.event.commits[0].author.name == 'renovate[bot]' &&
           contains(github.event.commits[0].message, 'chore(deps): update') }}
@@ -74,12 +74,10 @@ jobs:
         uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@e9c3d08ad505fce6fcbc2b190c621bc9bbb3ad06 # v0.0.65
       - name: Bump git version
         id: get_git_version
-        if: ${{ ! contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action')
-          }}
+        if: ${{ ! contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action') }}
         run: echo "result=$(devenv shell -q semver patch)" >> "$GITHUB_OUTPUT"
       - name: Update git tag
-        if: ${{ contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action')
-          }}
+        if: ${{ contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action') }}
         run: |
           GIT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null)
           git tag --force "$GIT_VERSION"
@@ -106,6 +104,7 @@ jobs:
       ${{ github.event_name == 'push' &&
 
 
+
         github.ref_type == 'tag' }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -119,6 +118,5 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
         with:
-          generate_release_notes: ${{ contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action')
-            }}
+          generate_release_notes: ${{ contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action') }}
           make_latest: true
