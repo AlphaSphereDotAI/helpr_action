@@ -27,18 +27,18 @@ runs:
   using: composite
   steps:
     - name: Test Dependency Compatibility
-      uses: AlphaSphereDotAI/helpr_action/ci/testing/dependency_compatibility@d883ae2685674640e14316ad94fc919424d9fa4a # v0.0.65
+      uses: AlphaSphereDotAI/helpr_action/ci/testing/dependency_compatibility@5f40d1e1b714a0749ad05fc82607f65b309c0e62 # v0.0.66
       if: ${{ inputs.test_dependency_compatibility == 'true' }}
       with:
         tool: ${{ inputs.dependency_compatibility_tool }}
     - name: Test code
-      uses: AlphaSphereDotAI/helpr_action/ci/testing/code@d883ae2685674640e14316ad94fc919424d9fa4a # v0.0.65
+      uses: AlphaSphereDotAI/helpr_action/ci/testing/code@5f40d1e1b714a0749ad05fc82607f65b309c0e62 # v0.0.66
       if: ${{ inputs.test_code == 'true' }}
       with:
         linter: ${{ inputs.linter }}
         github_token: ${{ inputs.github_token }}
     - name: Test Container Image
-      uses: AlphaSphereDotAI/helpr_action/ci/testing/container@d883ae2685674640e14316ad94fc919424d9fa4a # v0.0.65
+      uses: AlphaSphereDotAI/helpr_action/ci/testing/container@5f40d1e1b714a0749ad05fc82607f65b309c0e62 # v0.0.66
       if: ${{ inputs.test_container == 'true' }}
       with:
         image_tag: ${{ inputs.image_tag }}
