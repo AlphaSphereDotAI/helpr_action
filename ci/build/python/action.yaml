@@ -22,7 +22,8 @@ runs:
       shell: bash
     - name: Update Project Version
       if: >-
-        ${{ (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result }}
+        ${{ (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result
+        }}
       run: uv version ${{ inputs.target_version || github.ref_name }}
       shell: bash
     - name: Build source and wheel distribution
@@ -35,7 +36,8 @@ runs:
         path: dist/
     - name: Update the main branch to the updated version
       if: >-
-        ${{ (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result }}
+        ${{ (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result
+        }}
       uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
       with:
         commit_message: "Version: ${{ inputs.target_version || github.ref_name }}"
@@ -43,7 +45,8 @@ runs:
         commit_options: --no-verify
     - name: Update the tag to the updated version
       if: >-
-        ${{ (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result }}
+        ${{ (inputs.target_version || github.ref_name) != steps.get_package_version.outputs.result
+        }}
       run: |
         git tag --force ${{ inputs.target_version || github.ref_name }}
         git push origin --force HEAD:refs/tags/${{ inputs.target_version || github.ref_name }}
