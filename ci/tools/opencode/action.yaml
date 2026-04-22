@@ -6,7 +6,8 @@ inputs:
     required: true
     default: "opencode/big-pickle"
   agent:
-    description: "Agent to use. Must be a primary agent. Falls back to default_agent from config or 'build' if not found."
+    description: "Agent to use. Must be a primary agent. Falls back to default_agent
+      from config or 'build' if not found."
     required: false
   prompt:
     description: "Custom prompt to override the default prompt"
