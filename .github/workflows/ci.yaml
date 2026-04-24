@@ -8,7 +8,8 @@ on:
     tags:
       - "v*.*.*"
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.id || github.ref_name }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.id || github.ref_name
+    }}
   cancel-in-progress: true
 jobs:
   test:
@@ -75,10 +76,12 @@ jobs:
         uses: AlphaSphereDotAI/helpr_action/ci/setup/devenv@d8fd85606b78705110f2a6fac87909177370b0a2 # v0.0.71
       - name: Bump git version
         id: get_git_version
-        if: ${{ ! contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action') }}
+        if: ${{ ! contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action')
+          }}
         run: echo "result=$(devenv shell -q semver patch)" >> "$GITHUB_OUTPUT"
       - name: Update git tag
-        if: ${{ contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action') }}
+        if: ${{ contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action')
+          }}
         run: |
           GIT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null)
           git tag --force "$GIT_VERSION"
@@ -120,5 +123,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
         with:
-          generate_release_notes: ${{ contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action') }}
+          generate_release_notes: ${{ contains(github.event.commits[0].message, 'alphaspheredotai/helpr_action')
+            }}
           make_latest: true
