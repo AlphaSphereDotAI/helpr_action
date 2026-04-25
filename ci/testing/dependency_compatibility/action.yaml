@@ -11,7 +11,7 @@ runs:
   using: composite
   steps:
     - name: Test Dependency Compatibility
-      uses: AlphaSphereDotAI/helpr_action/ci/testing/dependency_compatibility/uv@3f94d830b1499a28a522070eb01476990afd3e05 # v0.0.72
+      uses: AlphaSphereDotAI/helpr_action/ci/testing/dependency_compatibility/uv@3d8194ee74728e443a0e65e58eb852be895ddb19 # v0.0.72
       if: ${{ inputs.tool == 'uv' }}
       with:
         shell: ${{ inputs.shell }}
