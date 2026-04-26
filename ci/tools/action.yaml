@@ -27,7 +27,7 @@ runs:
   steps:
     # Opencode
     - name: Run opencode
-      uses: AlphaSphereDotAI/helpr_action/ci/tools/opencode@ae3742650af0f849e3e4da9e96e2db30d8ecba54 # v0.0.72
+      uses: AlphaSphereDotAI/helpr_action/ci/tools/opencode@9d181ae2b51da9676ce7917093093d496fcdf612 # v0.0.72
       if: ${{ inputs.opencode_enabled == 'true' }}
       with:
         model: ${{ inputs.opencode_model }}
@@ -36,5 +36,5 @@ runs:
         prompt: ${{ inputs.opencode_prompt }}
     # UV Lock Sync
     - name: Sync dependencies in uv.lock
-      uses: AlphaSphereDotAI/helpr_action/ci/tools/uv_lock@ae3742650af0f849e3e4da9e96e2db30d8ecba54 # v0.0.72
+      uses: AlphaSphereDotAI/helpr_action/ci/tools/uv_lock@9d181ae2b51da9676ce7917093093d496fcdf612 # v0.0.72
       if: ${{ inputs.uv_lock_sync_enabled == 'true' }}
