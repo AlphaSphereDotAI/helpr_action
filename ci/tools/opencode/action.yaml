@@ -6,7 +6,8 @@ inputs:
     required: true
     default: "opencode/big-pickle"
   agent:
-    description: "Agent to use. Must be a primary agent. Falls back to default_agent from config or 'build' if not found."
+    description: "Agent to use. Must be a primary agent. Falls back to default_agent
+      from config or 'build' if not found."
     required: false
   prompt:
     description: "Custom prompt to override the default prompt"
@@ -22,7 +23,7 @@ runs:
       with:
         persist-credentials: false
     - name: Run opencode
-      uses: anomalyco/opencode/github@3c85719fea0ee83389c814d7abbf1f98c5c6f0f1 # v1.14.25
+      uses: anomalyco/opencode/github@5ce44035e23fc8b764516976b6a2750dbc37551f # v1.14.26
       env:
         OPENCODE_API_KEY: ${{ inputs.api_key }}
       with:
