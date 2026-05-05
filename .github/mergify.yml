@@ -9,7 +9,7 @@ queue_rules:
           - check-success = GitGuardian Security Checks
           - check-success = CodeQL
           - check-success = Test
-    autoqueue: true
     merge_method: fast-forward
 merge_protections_settings:
   reporting_method: check-runs
+  auto_merge_conditions: true
