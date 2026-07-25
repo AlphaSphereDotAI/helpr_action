@@ -58,12 +58,13 @@ runs:
       run: echo "result=$(uv version --short)" >> $GITHUB_OUTPUT
       shell: bash
     - name: Log in to ${{ inputs.registry }} Registry
-      uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
+      uses: docker/login-action@abd2ef45e78c5afb21d64d4ca52ee8550d9572c7 # v4.5.1
       with:
         registry: ${{ inputs.registry }}
         username: mh0386
         password: >-
-          ${{ inputs.registry == 'ghcr.io' && inputs.github_token || inputs.registry == 'docker.io' && inputs.docker_token }}
+          ${{ inputs.registry == 'ghcr.io' && inputs.github_token || inputs.registry
+          == 'docker.io' && inputs.docker_token }}
     - name: Set up QEMU
       uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4.0.0
     - name: Set up Docker Buildx
