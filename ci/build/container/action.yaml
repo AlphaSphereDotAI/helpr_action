@@ -63,7 +63,8 @@ runs:
         registry: ${{ inputs.registry }}
         username: mh0386
         password: >-
-          ${{ inputs.registry == 'ghcr.io' && inputs.github_token || inputs.registry == 'docker.io' && inputs.docker_token }}
+          ${{ inputs.registry == 'ghcr.io' && inputs.github_token || inputs.registry
+          == 'docker.io' && inputs.docker_token }}
     - name: Set up QEMU
       uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4.0.0
     - name: Set up Docker Buildx
