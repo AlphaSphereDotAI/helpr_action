@@ -13,7 +13,7 @@ runs:
   steps:
     # docker_scout
     - name: Docker Scout
-      uses: docker/scout-action@bacf462e8d090c09660de30a6ccc718035f961e3 # v1.20.4
+      uses: docker/scout-action@221e7f4860634eeb1579e3bd7ca232e577bd1864 # v1.26.0
       with:
         command: cves
         dockerhub-user: mh0386
